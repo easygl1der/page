@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}乐绎华 - 主页{% endblock %}
+
+{% block content %}
+<div id="page-bg"></div>
+<div class="home-container">
+    <div class="profile-section">
+        {% load static %}
+        <div class="profile-avatar">
+            <img src="{% static 'images/profile.jpg' %}" alt="乐绎华" class="avatar-img">
+        </div>
+        
+        <h1 class="profile-name">乐绎华</h1>
+        <h2 class="profile-title">Yue Yihua</h2>
+        <h3 class="profile-subtitle">数学系本科生</h3>
+        <p class="profile-institution">中山大学</p>
+        
+        <!-- Social Icons -->
+        <div class="social-icons">
+            <a href="mailto:yueyh@mail2.sysu.edu.cn" class="social-icon email" title="邮箱">
+                <svg class="heroicon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                </svg>
+            </a>
+            <a href="https://github.com/easygl1der" target="_blank" class="social-icon github" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="/about/" class="social-icon about" title="个人简历">
+                <i class="fas fa-user"></i>
+            </a>
+            <a href="/talk/latex/" class="social-icon talk" title="讲座">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </a>
+            <a href="https://easygl1der.github.io/MyWebsite/talk/latex-talk.pdf" target="_blank" class="social-icon pdf" title="LaTeX资料">
+                <i class="fas fa-file-pdf"></i>
+            </a>
+            <a href="/about/#contact" class="social-icon contact" title="联系方式">
+                <i class="fas fa-address-card"></i>
+            </a>
+        </div>
+        
+        <p class="profile-bio">
+            专注于偏微分方程、概率论和代数几何研究。热爱数学竞赛，擅长LaTeX排版。
+            通过学术研究和知识分享，探索数学的无限可能。
+        </p>
+    </div>
+</div>
+
+<div class="animated-background"></div>
+
+<script>
+// Dynamic hue-rotate background effect
+let bg = document.getElementById("page-bg");
+bg.style.setProperty("will-change", "filter", "");
+let hue = 0;
+let isDark = document.documentElement.classList.contains("dark") || 
+             document.body.classList.contains("dark-theme") ||
+             (document.body.classList.contains("auto-theme") && document.body.classList.contains("system-dark"));
+
+// Listen for theme changes
+document.addEventListener("DOMContentLoaded", function() {
+    // Check for theme changes
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === "attributes" && mutation.attributeName === "class") {
+                isDark = document.body.classList.contains("dark-theme") ||
+                        (document.body.classList.contains("auto-theme") && document.body.classList.contains("system-dark"));
+            }
+        });
+    });
+    
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ["class"]
+    });
+});
+
+// Smooth hue rotation animation
+setInterval(function() {
+    hue = (hue + 1) % 360;
+    if (isDark) {
+        bg.style.setProperty("filter", "hue-rotate(" + hue + "deg) invert(1) saturate(2)", "");
+    } else {
+        bg.style.setProperty("filter", "hue-rotate(" + hue + "deg)", "");
+    }
+}, 5000 / 360); // Complete 360 degrees in 5 seconds
+</script>
+{% endblock %} 

@@ -1,0 +1,234 @@
+{% extends 'base_en.html' %}
+
+{% block title %}My Football Hobby - Yue Yihua{% endblock %}
+
+{% block content %}
+<div class="hobby-detail">
+    <header class="hobby-header">
+        <h1>⚽ My Football Hobby</h1>
+        <p class="hobby-subtitle">Passionate about sports, enjoying the joy of teamwork</p>
+    </header>
+
+    <section class="hobby-intro section">
+        <h2>🏃‍♂️ About My Football Experience</h2>
+        <p>Football is one of my favorite sports. Beyond my busy studies, playing football not only keeps me physically healthy but, more importantly, allows me to experience the charm of teamwork and the joy that sports bring. Whether sweating on the campus green field or cheering with classmates for goals, football has added countless wonderful memories to my university life.</p>
+    </section>
+
+    <section class="match-photo section">
+        <h2>📸 Match Moments</h2>
+        <div class="photo-container">
+            {% load static %}
+            <img src="{% static 'images/football_match_2025.jpg' %}" alt="Football match photo" class="match-image">
+            <div class="photo-info">
+                <h3>Exciting Group Stage Moment</h3>
+                <div class="photo-details">
+                    <div class="detail-item">
+                        <span class="detail-label">📅 Date Taken:</span>
+                        <span class="detail-value">April 26, 2025, Afternoon</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">📍 Location:</span>
+                        <span class="detail-value">West Sports Field, South Campus, Sun Yat-sen University</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">⚽ Match Type:</span>
+                        <span class="detail-value">Group Stage</span>
+                    </div>
+                </div>
+                <p class="photo-description">
+                    This photo was taken during an intense group stage match, capturing my moment of striving on the field. Wearing the red jersey, I was actively participating in the game, working together with my teammates for victory.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="football-spirit section">
+        <h2>💪 What Football Has Taught Me</h2>
+        <div class="spirit-grid">
+            <div class="spirit-item">
+                <h3>🤝 Teamwork</h3>
+                <p>Football taught me how to collaborate with teammates and understand everyone's important role in the team.</p>
+            </div>
+            <div class="spirit-item">
+                <h3>💪 Physical Fitness</h3>
+                <p>Regular football training keeps me in good physical condition and full of energy.</p>
+            </div>
+            <div class="spirit-item">
+                <h3>🧠 Tactical Thinking</h3>
+                <p>Football matches have developed my tactical thinking and quick decision-making abilities.</p>
+            </div>
+            <div class="spirit-item">
+                <h3>😊 Joy & Happiness</h3>
+                <p>The joy and sense of achievement from sports are the best release from academic pressure.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="hobby-navigation">
+        <a href="/en/about/" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Homepage
+        </a>
+    </section>
+</div>
+
+<style>
+.hobby-detail {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.hobby-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.hobby-header h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.hobby-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.photo-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.match-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.match-image:hover {
+    transform: scale(1.02);
+}
+
+.photo-info h3 {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.photo-details {
+    margin-bottom: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    margin-bottom: 0.8rem;
+    align-items: center;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 120px;
+}
+
+.detail-value {
+    color: var(--text-secondary);
+}
+
+.photo-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-style: italic;
+}
+
+.spirit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.spirit-item {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.spirit-item:hover {
+    transform: translateY(-5px);
+}
+
+.spirit-item h3 {
+    color: var(--accent-color);
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+
+.spirit-item p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.hobby-navigation {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    text-decoration: none;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .photo-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .spirit-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dark theme adaptation */
+.dark-theme .spirit-item {
+    background-color: #2a2a3e;
+    border-color: #404060;
+}
+
+.dark-theme .back-btn {
+    background-color: #2a2a3e;
+    border-color: #404060;
+    color: #ffffff;
+}
+
+.dark-theme .back-btn:hover {
+    background: #4dabf7;
+    border-color: #4dabf7;
+}
+</style>
+{% endblock %} 

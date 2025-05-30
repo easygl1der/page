@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block title %}Lane-Emden-Fowler方程的数值求解研究 - 乐绎华{% endblock %}
+
+{% block content %}
+<div class="project-detail">
+    <header class="project-header">
+        <h1>Lane-Emden-Fowler方程的数值求解研究</h1>
+        <p class="project-subtitle">Mathematica课程项目</p>
+    </header>
+
+    <section class="project-abstract section">
+        <h2>📋 项目摘要</h2>
+        <p>Lane-Emden-Fowler方程是一类二阶非线性微分方程，它在数学物理以及众多工程领域中有着广泛的应用，比如天体力学、流体力学、热力学等领域，可以用来描述诸如恒星的结构、热传导等现象。为了求解这方程，数学家们使用了大量的解析手段，比如Kummer-Liouville变换、Lie symmetries和Painlevé analysis，还有人利用分析力学的方法求来求解。与此同时，由于该微分方程没有一般意义上的精确解，数学家们还发展出了许多数值求解方法。更进一步，通过引入分数阶导数，time-fractional Emden-Fowler方程更适合天文学和数学物理中的一些问题，当然也更加复杂，当下的研究主要采用Elzaki transform homotopy perturbation method (ET-HPM)和Laplace transform homotopy perturbation method (LH-HPM)用于给出解析解，这一方法结合扰动技巧，可以得到求解这类方程的数值方法。在具体问题的求解上，Mathematica的强大运算和画图能力可以起到了重要作用，包括解方程、画出解的图像等。不过，由于某些方程的求解计算量过大，导致Mathematica无法算出结果，我解决了其中一部分问题，但还有一部分计算问题无法解决。</p>
+    </section>
+
+    <section class="project-keywords section">
+        <h2>🔑 关键词</h2>
+        <div class="keywords-list">
+            <span class="keyword">Mathematica</span>
+            <span class="keyword">Lane-Emden-Fowler方程</span>
+            <span class="keyword">数值分析</span>
+            <span class="keyword">LH-HPM</span>
+            <span class="keyword">分数阶导数</span>
+        </div>
+    </section>
+
+    <section class="project-methods section">
+        <h2>🔬 研究方法</h2>
+        <ul>
+            <li><strong>Elzaki Transform Homotopy Perturbation Method (ET-HPM)</strong> - 结合Elzaki变换和同伦扰动方法</li>
+            <li><strong>Laplace Transform Homotopy Perturbation Method (LH-HPM)</strong> - 结合拉普拉斯变换和同伦扰动方法</li>
+            <li><strong>分数阶导数扩展</strong> - 将方程扩展到time-fractional Emden-Fowler方程</li>
+            <li><strong>数值计算与可视化</strong> - 利用Mathematica进行方程求解和结果可视化</li>
+        </ul>
+    </section>
+
+    <section class="project-applications section">
+        <h2>🌟 应用领域</h2>
+        <div class="applications-grid">
+            <div class="application-item">
+                <h3>天体力学</h3>
+                <p>用于描述恒星结构和演化过程</p>
+            </div>
+            <div class="application-item">
+                <h3>流体力学</h3>
+                <p>分析流体运动和传热传质现象</p>
+            </div>
+            <div class="application-item">
+                <h3>热力学</h3>
+                <p>研究热传导和温度分布问题</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-challenges section">
+        <h2>⚡ 技术挑战</h2>
+        <p>在项目实施过程中，遇到了一些技术挑战：</p>
+        <ul>
+            <li>某些复杂方程的计算量过大，超出了Mathematica的计算能力</li>
+            <li>需要平衡解析解的精确性和数值方法的计算效率</li>
+            <li>分数阶导数的引入增加了方程的复杂性</li>
+            <li>可视化复杂解的图像需要优化算法和参数</li>
+        </ul>
+    </section>
+
+    <section class="project-download section">
+        <h2>📄 项目文档</h2>
+        <div class="download-links">
+            <a href="/static/files/项目-23363017-乐绎华.pdf" target="_blank" class="download-btn primary">
+                <i class="fas fa-file-pdf"></i>
+                下载完整报告 PDF
+            </a>
+        </div>
+    </section>
+
+    <section class="project-navigation">
+        <a href="/about/" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            返回主页
+        </a>
+    </section>
+</div>
+
+<style>
+.project-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.project-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.project-header h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.project-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.keywords-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.keyword {
+    background: var(--accent-color);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.applications-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.application-item {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.application-item h3 {
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.download-links {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+    background: var(--accent-color-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.project-navigation {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    text-decoration: none;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.dark-theme .application-item {
+    background-color: #2a2a3e;
+    border-color: #404060;
+}
+
+.dark-theme .back-btn {
+    background-color: #2a2a3e;
+    border-color: #404060;
+    color: #ffffff;
+}
+
+.dark-theme .back-btn:hover {
+    background: #4dabf7;
+    border-color: #4dabf7;
+}
+</style>
+{% endblock %}

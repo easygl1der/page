@@ -1,0 +1,207 @@
+{% extends 'base_en.html' %}
+
+{% block title %}Numerical Solution Research of Lane-Emden-Fowler Equations - Yue Yihua{% endblock %}
+
+{% block content %}
+<div class="project-detail">
+    <header class="project-header">
+        <h1>Numerical Solution Research of Lane-Emden-Fowler Equations</h1>
+        <p class="project-subtitle">Mathematica Course Project</p>
+    </header>
+
+    <section class="project-abstract section">
+        <h2>📋 Project Abstract</h2>
+        <p>Lane-Emden-Fowler equations are a class of second-order nonlinear differential equations with wide applications in mathematical physics and numerous engineering fields, such as astrophysics, fluid mechanics, thermodynamics, etc., which can be used to describe phenomena such as stellar structure and heat conduction. To solve these equations, mathematicians have used a large number of analytical methods, such as Kummer-Liouville transformations, Lie symmetries, and Painlevé analysis, and some have used analytical mechanics methods to solve them. At the same time, since these differential equations do not have exact solutions in the general sense, mathematicians have also developed many numerical solution methods. Furthermore, by introducing fractional derivatives, time-fractional Emden-Fowler equations are more suitable for some problems in astronomy and mathematical physics, although they are also more complex. Current research mainly adopts Elzaki transform homotopy perturbation method (ET-HPM) and Laplace transform homotopy perturbation method (LH-HPM) to provide analytical solutions. This method combines perturbation techniques to obtain numerical methods for solving such equations. In solving specific problems, Mathematica's powerful computational and graphical capabilities play an important role, including solving equations and plotting solution images. However, due to the excessive computational load of some equations, Mathematica cannot produce results. I solved some of these problems, but there are still some computational problems that cannot be resolved.</p>
+    </section>
+
+    <section class="project-keywords section">
+        <h2>🔑 Keywords</h2>
+        <div class="keywords-list">
+            <span class="keyword">Mathematica</span>
+            <span class="keyword">Lane-Emden-Fowler Equations</span>
+            <span class="keyword">Numerical Analysis</span>
+            <span class="keyword">LH-HPM</span>
+            <span class="keyword">Fractional Derivatives</span>
+        </div>
+    </section>
+
+    <section class="project-methods section">
+        <h2>🔬 Research Methods</h2>
+        <ul>
+            <li><strong>Elzaki Transform Homotopy Perturbation Method (ET-HPM)</strong> - Combining Elzaki transform with homotopy perturbation method</li>
+            <li><strong>Laplace Transform Homotopy Perturbation Method (LH-HPM)</strong> - Combining Laplace transform with homotopy perturbation method</li>
+            <li><strong>Fractional Derivative Extension</strong> - Extending equations to time-fractional Emden-Fowler equations</li>
+            <li><strong>Numerical Computation and Visualization</strong> - Using Mathematica for equation solving and result visualization</li>
+        </ul>
+    </section>
+
+    <section class="project-applications section">
+        <h2>🌟 Application Fields</h2>
+        <div class="applications-grid">
+            <div class="application-item">
+                <h3>Astrophysics</h3>
+                <p>Used to describe stellar structure and evolution processes</p>
+            </div>
+            <div class="application-item">
+                <h3>Fluid Mechanics</h3>
+                <p>Analyzing fluid motion and heat and mass transfer phenomena</p>
+            </div>
+            <div class="application-item">
+                <h3>Thermodynamics</h3>
+                <p>Studying heat conduction and temperature distribution problems</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-challenges section">
+        <h2>⚡ Technical Challenges</h2>
+        <p>During project implementation, several technical challenges were encountered:</p>
+        <ul>
+            <li>Excessive computational load of some complex equations exceeded Mathematica's computational capacity</li>
+            <li>Need to balance the accuracy of analytical solutions with the computational efficiency of numerical methods</li>
+            <li>Introduction of fractional derivatives increased equation complexity</li>
+            <li>Visualizing complex solution images required algorithm and parameter optimization</li>
+        </ul>
+    </section>
+
+    <section class="project-download section">
+        <h2>📄 Project Documentation</h2>
+        <div class="download-links">
+            <a href="/static/files/项目-23363017-乐绎华.pdf" target="_blank" class="download-btn primary">
+                <i class="fas fa-file-pdf"></i>
+                Download Full Report PDF
+            </a>
+        </div>
+    </section>
+
+    <section class="project-navigation">
+        <a href="/en/about/" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Homepage
+        </a>
+    </section>
+</div>
+
+<style>
+.project-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.project-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.project-header h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.project-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.keywords-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.keyword {
+    background: var(--accent-color);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.applications-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.application-item {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.application-item h3 {
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.download-links {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+    background: var(--accent-color-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.project-navigation {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    text-decoration: none;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.dark-theme .application-item {
+    background-color: #2a2a3e;
+    border-color: #404060;
+}
+
+.dark-theme .back-btn {
+    background-color: #2a2a3e;
+    border-color: #404060;
+    color: #ffffff;
+}
+
+.dark-theme .back-btn:hover {
+    background: #4dabf7;
+    border-color: #4dabf7;
+}
+</style>
+{% endblock %} 
