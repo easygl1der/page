@@ -1,0 +1,234 @@
+
+
+我的足球爱好 - 乐绎华
+
+
+<div class="hobby-detail">
+    <header class="hobby-header">
+        <h1>⚽ 我的足球爱好</h1>
+        <p class="hobby-subtitle">热爱运动，享受团队合作的乐趣</p>
+    </header>
+
+    <section class="hobby-intro section">
+        <h2>🏃‍♂️ 关于我的足球经历</h2>
+        <p>足球是我最喜欢的运动之一。在繁忙的学习之余，踢球不仅让我保持身体健康，更重要的是让我体验到团队合作的魅力和运动带来的快乐。无论是在校园的绿茵场上挥洒汗水，还是与同学们一起为进球而欢呼，足球都给我的大学生活增添了无数美好的回忆。</p>
+    </section>
+
+    <section class="match-photo section">
+        <h2>📸 比赛瞬间</h2>
+        <div class="photo-container">
+            
+            <img src="static/images/football_match_2025.jpg" alt="足球比赛照片" class="match-image">
+            <div class="photo-info">
+                <h3>小组赛精彩瞬间</h3>
+                <div class="photo-details">
+                    <div class="detail-item">
+                        <span class="detail-label">📅 拍摄时间：</span>
+                        <span class="detail-value">2025年4月26日下午</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">📍 拍摄地点：</span>
+                        <span class="detail-value">中山大学南校园西大体育场</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">⚽ 比赛性质：</span>
+                        <span class="detail-value">小组赛</span>
+                    </div>
+                </div>
+                <p class="photo-description">
+                    这张照片拍摄于一场激烈的小组赛中，记录了我在球场上拼搏的瞬间。穿着红色球衣的我正在积极参与比赛，与队友们一起为胜利而努力。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="football-spirit section">
+        <h2>💪 足球带给我的收获</h2>
+        <div class="spirit-grid">
+            <div class="spirit-item">
+                <h3>🤝 团队合作</h3>
+                <p>足球教会了我如何与队友协作，理解每个人在团队中的重要作用。</p>
+            </div>
+            <div class="spirit-item">
+                <h3>💪 身体素质</h3>
+                <p>定期的足球训练让我保持良好的身体状态和充沛的精力。</p>
+            </div>
+            <div class="spirit-item">
+                <h3>🧠 战术思维</h3>
+                <p>足球比赛培养了我的战术思维和快速决策能力。</p>
+            </div>
+            <div class="spirit-item">
+                <h3>😊 快乐心情</h3>
+                <p>运动带来的快乐和成就感是学习压力的最好释放。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="hobby-navigation">
+        <a href="/about/" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            返回主页
+        </a>
+    </section>
+</div>
+
+<style>
+.hobby-detail {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.hobby-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.hobby-header h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.hobby-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.photo-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.match-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.match-image:hover {
+    transform: scale(1.02);
+}
+
+.photo-info h3 {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.photo-details {
+    margin-bottom: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    margin-bottom: 0.8rem;
+    align-items: center;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 100px;
+}
+
+.detail-value {
+    color: var(--text-secondary);
+}
+
+.photo-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-style: italic;
+}
+
+.spirit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.spirit-item {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.spirit-item:hover {
+    transform: translateY(-5px);
+}
+
+.spirit-item h3 {
+    color: var(--accent-color);
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+
+.spirit-item p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.hobby-navigation {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    text-decoration: none;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .photo-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .spirit-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 黑夜模式适配 */
+.dark-theme .spirit-item {
+    background-color: #2a2a3e;
+    border-color: #404060;
+}
+
+.dark-theme .back-btn {
+    background-color: #2a2a3e;
+    border-color: #404060;
+    color: #ffffff;
+}
+
+.dark-theme .back-btn:hover {
+    background: #4dabf7;
+    border-color: #4dabf7;
+}
+</style>
+ 
