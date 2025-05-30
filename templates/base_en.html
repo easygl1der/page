@@ -682,7 +682,7 @@
             height: 1.2rem;
             stroke: white;
         }
-
+        
         /* Block and card styling inspired by Resume Theme */
         .card, .section, .talk-item, .award-item, .skill-category {
             background-color: #f5f5f5; /* Light gray background, similar to Resume Theme block color */
@@ -1055,7 +1055,7 @@
                 font-size: 0.85rem;
             }
         }
-
+        
         /* Hobby link styling */
         .hobby-link {
             color: var(--accent-color, #007bff);
@@ -1427,7 +1427,7 @@
                 <!-- 右侧区域：语言切换器、主题切换器和移动端菜单按钮 -->
                 <div class="nav-right">
                     <!-- 语言切换器 -->
-                    <div class="language-switcher">
+     <div class="language-switcher">
                         <button class="switcher-btn lang-btn" id="lang-btn">
                             <i class="fas fa-globe"></i>
                         </button>
@@ -1440,12 +1440,12 @@
                                 <span>English</span>
                             </a>
                         </div>
-                    </div>
-                    
+     </div>
+
                     <!-- 主题切换器 -->
                     <div class="theme-switcher">
                         <button class="switcher-btn theme-btn" id="theme-btn">
-                            <i class="fas fa-sun" id="themeIcon"></i>
+        <i class="fas fa-sun" id="themeIcon"></i>
                         </button>
                         <div class="switcher-dropdown theme-dropdown" id="theme-dropdown">
                             <a href="#" class="dropdown-option" data-theme="light">
@@ -1458,15 +1458,15 @@
                                 <i class="fas fa-moon"></i>
                                 <span>Dark</span>
                             </a>
-                        </div>
-                    </div>
+    </div>
+            </div>
                     
                     <!-- 移动端菜单切换按钮 -->
-                    <div class="nav-toggle" id="navToggle">
+            <div class="nav-toggle" id="navToggle">
                         <span class="hamburger-line"></span>
                         <span class="hamburger-line"></span>
                         <span class="hamburger-line"></span>
-                    </div>
+            </div>
                 </div>
             </div>
         </nav>
@@ -1579,8 +1579,8 @@
                 e.stopPropagation();
                 const selectedTheme = option.getAttribute('data-theme');
                 currentTheme = selectedTheme;
-                setTheme(currentTheme);
-                localStorage.setItem('theme', currentTheme);
+            setTheme(currentTheme);
+            localStorage.setItem('theme', currentTheme);
                 themeDropdown.classList.remove('show');
             });
         });

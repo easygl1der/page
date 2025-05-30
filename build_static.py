@@ -187,9 +187,31 @@ if __name__ == '__main__':
     static_src = os.path.join(project_dir, 'staticfiles')
 
     # 清理并创建 docs 目录
-    if os.path.exists(docs_dir):
-        shutil.rmtree(docs_dir)
-    os.makedirs(docs_dir)
+    try:
+        if os.path.exists(docs_dir):
+            shutil.rmtree(docs_dir)
+    except Exception as e:
+        print(f"无法删除 docs 目录，可能被占用: {e}")
+        print("尝试清理目录内容...")
+        try:
+            # 删除目录中的所有文件和子目录
+            for root, dirs, files in os.walk(docs_dir):
+                for file in files:
+                    try:
+                        os.remove(os.path.join(root, file))
+                    except Exception:
+                        pass
+                for dir in dirs:
+                    try:
+                        shutil.rmtree(os.path.join(root, dir))
+                    except Exception:
+                        pass
+        except Exception as e2:
+            print(f"清理失败: {e2}")
+    
+    # 确保 docs 目录存在
+    if not os.path.exists(docs_dir):
+        os.makedirs(docs_dir)
 
     # 从Django模板生成HTML文件
     generate_html_files(docs_dir)

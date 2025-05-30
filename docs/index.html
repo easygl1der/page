@@ -1408,20 +1408,20 @@
         <nav class="navbar-container">
             <div class="navbar">
                 <!-- 左侧logo -->
-                <div class="logo">
-                    <h1>乐绎华</h1>
-                </div>
+            <div class="logo">
+                <h1>乐绎华</h1>
+            </div>
                 
                 <!-- 中间导航菜单 -->
                 <div class="nav-center">
-                    <ul class="nav-menu" id="navMenu">
-                        <li><a href="/about/#bio">简介</a></li>
-                        <li><a href="/about/#talks">讲座</a></li>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/about/#bio">简介</a></li>
+                <li><a href="/about/#talks">讲座</a></li>
                         <li><a href="/about/#projects">项目</a></li>
-                        <li><a href="/about/#awards">获奖</a></li>
-                        <li><a href="/about/#skills">技能</a></li>
-                        <li><a href="/about/#contact">联系</a></li>
-                    </ul>
+                <li><a href="/about/#awards">获奖</a></li>
+                <li><a href="/about/#skills">技能</a></li>
+                <li><a href="/about/#contact">联系</a></li>
+            </ul>
                 </div>
                 
                 <!-- 右侧区域：语言切换器、主题切换器和移动端菜单按钮 -->
@@ -1432,11 +1432,11 @@
                             <i class="fas fa-globe"></i>
                         </button>
                         <div class="switcher-dropdown lang-dropdown" id="lang-dropdown">
-                            <a href="index.html" class="dropdown-option active">
+                            <a href="/cn/" class="dropdown-option active">
                                 <i class="fas fa-check"></i>
                                 <span>中文</span>
                             </a>
-                            <a href="index_en.html" class="dropdown-option">
+                            <a href="/en/" class="dropdown-option">
                                 <span>English</span>
                             </a>
                         </div>
@@ -1472,11 +1472,269 @@
         </nav>
     </header>
     <main>
-        {% block content %}
-        {% endblock %}
+        <section id="bio" class="hero">
+    <div class="hero-content">
+        <div class="profile">
+            <h1>👋 你好，我是乐绎华</h1>
+            <h2>数学本科生，中山大学</h2>
+            <p>我是一名对数学充满热情的本科生，即将进入大三。我特别热衷于探索偏微分方程、高等概率论和代数几何等领域。</p>
+            <div class="interests">
+                <h3>研究兴趣</h3>
+                <ul>
+                    <li>偏微分方程 (Partial Differential Equations)</li>
+                    <li>概率论 (Probability Theory)</li>
+                    <li>代数几何 (Algebraic Geometry)</li>
+                </ul>
+            </div>
+            <div class="education">
+                <h3>教育背景</h3>
+                <ul>
+                    <li><strong>数学学士</strong> - 中山大学 (2023年9月至今)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="profile-photo">
+            
+            <img src="static/images/profile.jpg" alt="乐绎华的照片" class="tilted-photo">
+            
+            <!-- Contact Icons under photo -->
+            <div class="bio-contact-icons">
+                <a href="mailto:yueyh@mail2.sysu.edu.cn" class="bio-icon email" title="发送邮件">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                </a>
+                <a href="https://github.com/easygl1der" target="_blank" class="bio-icon github" title="GitHub">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                </a>
+                <a href="static/images/telegram_qr_luciferaser.png" target="_blank" class="bio-icon telegram" title="Telegram: @LUCIFERASER">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                </a>
+                <a href="static/files/resume_yueyihua.pdf" target="_blank" class="bio-icon resume" title="下载简历">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="talks">
+    <h2>🎤 讲座与分享</h2>
+    <div class="talks-list">
+        <a href="talk_detail.html" class="talk-item-link">
+            <div class="talk-item clickable-talk">
+                <div class="talk-header">
+                    <h3>LaTeX 高级入门讲座</h3>
+                    <div class="talk-image">
+                        
+                        <img src="static/images/latex-talk-1.jpg" alt="LaTeX讲座现场" class="talk-photo">
+                    </div>
+                </div>
+                <div class="talk-content">
+                    <div class="talk-meta">
+                        <div class="talk-time">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>2024年11月15日 19:00-22:00</span>
+                        </div>
+                        <div class="talk-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>392栋301黄传经堂</span>
+                        </div>
+                    </div>
+                    <div class="talk-description">
+                        <p>为新生介绍LaTeX的基础知识，如LaTeX的基础功能，安装方法，使用技巧等等。本活动由SPS物理协会与笃行工作室联合举办。</p>
+                    </div>
+                </div>
+                <div class="talk-action">
+                    <span class="talk-link-text">点击查看详情 →</span>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section id="projects">
+    <h2>📑 我的Mathematica项目</h2>
+    <div class="projects-list">
+        <a href="mathematica_project.html" class="project-item-link">
+            <div class="project-item clickable-project">
+                <h3>Lane-Emden-Fowler方程的数值求解研究</h3>
+                <p><strong>摘要：</strong>Lane-Emden-Fowler方程是一类二阶非线性微分方程，在天体力学、流体力学、热力学等领域有着广泛应用，可用来描述恒星结构、热传导等现象。</p>
+                <p><strong>关键词：</strong>Mathematica, Lane-Emden-Fowler方程, 数值分析, LH-HPM, 分数阶导数</p>
+                <div class="project-action">
+                    <span class="project-link-text">点击查看详情 →</span>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section id="awards">
+    <h2>🏆 获奖经历</h2>
+    <div class="awards-list">
+        <a href="https://mp.weixin.qq.com/s/aZOxVwuB1lkwG64KBbxHVA" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>国家奖学金</h3>
+                <p>2023-2024学年 国家级奖学金</p>
+                <div class="award-action">
+                    <span class="award-link-text">查看信息 →</span>
+                </div>
+            </div>
+        </a>
+        <div class="award-item clickable-award">
+            <h3>中山大学一等奖学金</h3>
+            <p>2023-2024学年 中山大学</p>
+        </div>
+        <a href="http://yau-contest.com/uploads/202505/27/1748321560229592.pdf" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>2025年丘成桐大学生数学竞赛 - 分析与微分方程赛道优胜奖</h3>
+                <p>丘成桐大学生数学竞赛</p>
+                <div class="award-action">
+                    <span class="award-link-text">查看信息 →</span>
+                </div>
+            </div>
+        </a>
+        <a href="http://yau-contest.com/uploads/202505/27/1748321521986447.pdf" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>2025年丘成桐大学生数学竞赛 - 概率与统计赛道入围决赛</h3>
+                <p>丘成桐大学生数学竞赛</p>
+                <div class="award-action">
+                    <span class="award-link-text">查看信息 →</span>
+                </div>
+            </div>
+        </a>
+        <a href="https://mp.weixin.qq.com/s/pLsQK1NePCJEvThrzODyEA" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>第十五届全国大学生数学竞赛决赛（低年级组）一等奖</h3>
+                <p>全国排名第8名</p>
+                <div class="award-action">
+                    <span class="award-link-text">查看信息 →</span>
+                </div>
+            </div>
+        </a>
+        <a href="https://mp.weixin.qq.com/s/Ub4s1H-VSKTMjKb46uZ1DQ" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>第十六届全国大学生数学竞赛决赛（高年级组）一等奖</h3>
+                <p>中国数学会</p>
+                <div class="award-action">
+                    <span class="award-link-text">查看信息 →</span>
+                </div>
+            </div>
+        </a>
+        <a href="https://mp.weixin.qq.com/s/a2dAGMuanNshS19gGiIrBg" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>第十六届全国大学生数学竞赛初赛一等奖</h3>
+                <p>广东省排名第1名</p>
+                <div class="award-action">
+                    <span class="award-link-text">查看信息 →</span>
+                </div>
+            </div>
+        </a>
+        <div class="award-item clickable-award">
+            <h3>第六届阿里巴巴全球数学竞赛入围决赛</h3>
+            <p>阿里巴巴</p>
+        </div>
+        <div class="award-item clickable-award">
+            <h3>美国大学生数学建模竞赛Honorable Mention</h3>
+            <p>Mathematical Contest in Modeling</p>
+        </div>
+        <div class="award-item clickable-award">
+            <h3>全国大学生数学建模竞赛广东省一等奖</h3>
+            <p>全国大学生数学建模竞赛组织方</p>
+        </div>
+    </div>
+</section>
+
+<section id="skills">
+    <h2>💻 技能与爱好</h2>
+    <div class="skills-grid">
+        <div class="skill-category">
+            <h3>技术技能</h3>
+            <ul>
+                <li class="skill-item">
+                    <svg class="heroicon skill-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                    </svg>
+                    <span>Mathematica</span>
+                </li>
+                <li class="skill-item">
+                    <svg class="heroicon skill-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    <span>LaTeX</span>
+                </li>
+                <li class="skill-item">
+                    <svg class="heroicon skill-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+                    </svg>
+                    <span>Python</span>
+                </li>
+            </ul>
+        </div>
+        <div class="skill-category">
+            <h3>语言能力</h3>
+            <ul>
+                <li>中文 (母语)</li>
+                <li>英语 (75%)</li>
+                <li>法语 (25%)</li>
+            </ul>
+        </div>
+        <div class="skill-category">
+            <h3>兴趣爱好</h3>
+            <ul>
+                <li><a href="football_hobby.html" class="hobby-link">足球</a></li>
+                <li>吃好吃的</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <h2>📞 联系方式</h2>
+    <div class="contact-info">
+        <div class="contact-links">
+            <a href="mailto:yueyh@mail2.sysu.edu.cn" class="contact-link email" title="发送邮件">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                <span>yueyh@mail2.sysu.edu.cn</span>
+            </a>
+            <a href="https://github.com/easygl1der" target="_blank" class="contact-link github" title="查看 GitHub">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+                <span>github.com/easygl1der</span>
+            </a>
+            <a href="static/images/telegram_qr_luciferaser.png" target="_blank" class="contact-link telegram" title="Telegram二维码">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+                <span>@LUCIFERASER</span>
+            </a>
+            <a href="static/files/resume_yueyihua.pdf" target="_blank" class="contact-link resume" title="下载简历">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                </svg>
+                <span>个人简历 PDF</span>
+            </a>
+            <div class="contact-item school">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/>
+                </svg>
+                <span>中山大学</span>
+            </div>
+        </div>
+    </div>
+</section>
     </main>
     <footer>
-        <p>&copy; 2025 乐绎华. 本网站采用 CC BY NC ND 4.0 许可协议。</p>
+        <p>&copy;  乐绎华. 本网站采用 CC BY NC ND 4.0 许可协议。</p>
     </footer>
     <script>
         // Navigation toggle
@@ -1497,7 +1755,7 @@
         langBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             // 直接切换到英文版
-            window.location.href = 'index_en.html';
+            window.location.href = '/en/';
         });
 
         // 鼠标悬停显示下拉菜单
@@ -1579,8 +1837,8 @@
                 e.stopPropagation();
                 const selectedTheme = option.getAttribute('data-theme');
                 currentTheme = selectedTheme;
-                setTheme(currentTheme);
-                localStorage.setItem('theme', currentTheme);
+            setTheme(currentTheme);
+            localStorage.setItem('theme', currentTheme);
                 themeDropdown.classList.remove('show');
             });
         });
