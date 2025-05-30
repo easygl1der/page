@@ -1,4 +1,31 @@
-<!DOCTYPE html>
+import os
+import shutil
+import subprocess
+import sys
+from django.core.management import execute_from_command_line
+from django.template.loader import render_to_string
+from django.conf import settings
+
+def run(cmd, cwd=None):
+    print(f"Running: {cmd}")
+    result = subprocess.run(cmd, shell=True, cwd=cwd)
+    if result.returncode != 0:
+        print(f"Command failed: {cmd}", file=sys.stderr)
+        sys.exit(result.returncode)
+
+def setup_django():
+    """设置Django环境"""
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'academic_homepage.settings')
+    import django
+    django.setup()
+
+def generate_html_files(docs_dir):
+    """手动生成HTML文件"""
+    from django.template.loader import get_template
+    from django.template import Context
+    
+    # 生成中文版主页
+    index_content = '''<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -254,4 +281,39 @@
         });
     </script>
 </body>
-</html>
+</html>'''
+    
+    # 写入中文版主页
+    with open(os.path.join(docs_dir, 'index.html'), 'w', encoding='utf-8') as f:
+        f.write(index_content)
+    
+    print("HTML文件生成完成")
+
+if __name__ == '__main__':
+    # 确定项目根目录（包含 manage.py 的目录）
+    project_dir = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(project_dir)
+
+    # 安装 Python 依赖
+    run("pip install -r requirements.txt")
+
+    # 收集静态文件到 STATIC_ROOT
+    run("python manage.py collectstatic --noinput")
+
+    # 生成目录和路径
+    docs_dir = os.path.join(project_dir, 'docs')
+    static_src = os.path.join(project_dir, 'staticfiles')
+
+    # 清理并创建 docs 目录
+    if os.path.exists(docs_dir):
+        shutil.rmtree(docs_dir)
+    os.makedirs(docs_dir)
+
+    # 手动生成HTML文件
+    generate_html_files(docs_dir)
+
+    # 拷贝静态资源到 docs/static
+    dest_static = os.path.join(docs_dir, 'static')
+    shutil.copytree(static_src, dest_static)
+
+    print("文档生成完成: docs 目录已更新，请将其推送到 GitHub 并配置 Pages 源为 /docs") 
