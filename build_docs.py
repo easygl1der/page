@@ -2,9 +2,8 @@ import os
 import shutil
 import subprocess
 import sys
-from django.core.management import execute_from_command_line
-from django.template.loader import render_to_string
-from django.conf import settings
+import re
+from datetime import datetime
 
 def run(cmd, cwd=None):
     print(f"Running: {cmd}")
@@ -19,117 +18,138 @@ def setup_django():
     import django
     django.setup()
 
-def generate_html_files(docs_dir):
-    """从Django模板生成HTML文件"""
-    from django.template.loader import render_to_string
-    from django.template import Context, Template
-    from django.template.context import RequestContext
-    from django.test import RequestFactory
+def process_django_template(template_content, is_base=False, page_title=""):
+    """处理Django模板，转换为静态HTML"""
+    # 移除{% load static %}标签
+    content = re.sub(r'{% load static %}', '', template_content)
     
-    # 创建一个模拟的request对象
-    factory = RequestFactory()
-    request = factory.get('/')
+    # 处理{% static %}标签
+    content = re.sub(r"{% static ['\"]([^'\"]+)['\"] %}", r'static/\1', content)
     
-    # 生成中文版主页
+    # 处理{% url %}标签
+    url_mappings = {
+        'talk_detail': 'talk_detail.html',
+        '/talk/latex/': 'talk_detail.html',
+        '/project/mathematica/': 'mathematica_project.html',
+        '/hobby/football/': 'football_hobby.html',
+        '/cn/': 'index.html',
+        '/en/': 'index_en.html',
+        '/': 'index.html'
+    }
+    
+    for url_name, static_url in url_mappings.items():
+        content = re.sub(r"{% url ['\"]?" + re.escape(url_name) + r"['\"]? %}", static_url, content)
+        content = content.replace(f'href="{url_name}"', f'href="{static_url}"')
+    
+    # 处理{% now %}标签
+    current_year = datetime.now().year
+    content = re.sub(r'{% now ["\']Y["\'] %}', str(current_year), content)
+    
+    # 处理相对路径
+    content = content.replace('href="/static/', 'href="static/')
+    content = content.replace('src="/static/', 'src="static/')
+    
+    # 处理block标签（对于base模板）
+    if is_base and page_title:
+        # 替换title中的block标签
+        content = re.sub(r'<title>{% block title %}.*?{% endblock %}</title>', f'<title>{page_title}</title>', content)
+        # 替换其他地方的title block
+        content = re.sub(r'{% block title %}.*?{% endblock %}', page_title, content)
+    
+    # 如果不是base模板，处理block标签
+    if not is_base:
+        # 移除extends标签
+        content = re.sub(r'{% extends [^%]*%}', '', content)
+        
+        # 提取并返回content block的内容
+        block_match = re.search(r'{% block content %}(.*?){% endblock %}', content, re.DOTALL)
+        if block_match:
+            block_content = block_match.group(1).strip()
+            # 再次处理提取出的内容中的Django标签
+            block_content = re.sub(r'{% load static %}', '', block_content)
+            block_content = re.sub(r"{% static ['\"]([^'\"]+)['\"] %}", r'static/\1', block_content)
+            # 处理{% url %}标签
+            for url_name, static_url in url_mappings.items():
+                block_content = re.sub(r"{% url ['\"]?" + re.escape(url_name) + r"['\"]? %}", static_url, block_content)
+                block_content = block_content.replace(f'href="{url_name}"', f'href="{static_url}"')
+            # 处理相对路径
+            block_content = block_content.replace('href="/static/', 'href="static/')
+            block_content = block_content.replace('src="/static/', 'src="static/')
+            return block_content
+    
+    return content
+
+def generate_page_from_templates(base_template_path, content_template_path, output_path, page_title):
+    """从基础模板和内容模板生成完整页面"""
     try:
-        # 读取模板文件
-        with open('templates/base.html', 'r', encoding='utf-8') as f:
-            base_template_content = f.read()
+        # 读取基础模板
+        with open(base_template_path, 'r', encoding='utf-8') as f:
+            base_content = f.read()
         
-        with open('templates/index.html', 'r', encoding='utf-8') as f:
-            index_template_content = f.read()
+        # 读取内容模板
+        with open(content_template_path, 'r', encoding='utf-8') as f:
+            content_template = f.read()
         
-        # 处理模板继承和静态文件路径
-        # 替换Django模板标签为静态路径
-        processed_base = base_template_content.replace('{% load static %}', '')
-        processed_base = processed_base.replace("{% static '", "static/")
-        processed_base = processed_base.replace("' %}", "")
-        processed_base = processed_base.replace('{% static "', 'static/')
-        processed_base = processed_base.replace('" %}', '')
+        # 处理基础模板，传递page_title
+        processed_base = process_django_template(base_content, is_base=True, page_title=page_title)
         
-        # 处理index模板
-        processed_index = index_template_content.replace('{% load static %}', '')
-        processed_index = processed_index.replace("{% static '", "static/")
-        processed_index = processed_index.replace("' %}", "")
-        processed_index = processed_index.replace('{% static "', 'static/')
-        processed_index = processed_index.replace('" %}', '')
+        # 处理内容模板并提取content
+        page_content = process_django_template(content_template, is_base=False)
         
-        # 替换Django URL标签
-        processed_index = processed_index.replace('href="/talk/latex/"', 'href="talk_detail.html"')
-        processed_index = processed_index.replace('href="/static/', 'href="static/')
-        processed_index = processed_index.replace('src="/static/', 'src="static/')
+        # 替换content
+        final_html = processed_base.replace('{% block content %}{% endblock %}', page_content)
         
-        # 提取content部分
-        content_start = processed_index.find('{% block content %}') + len('{% block content %}')
-        content_end = processed_index.find('{% endblock %}')
-        content = processed_index[content_start:content_end].strip()
-        
-        # 替换base模板中的block
-        final_html = processed_base.replace('{% block title %}{% endblock %}', '乐绎华 - 个人学术主页')
-        final_html = final_html.replace('{% block content %}{% endblock %}', content)
-        
-        # 写入中文版主页
-        with open(os.path.join(docs_dir, 'index.html'), 'w', encoding='utf-8') as f:
+        # 写入文件
+        with open(output_path, 'w', encoding='utf-8') as f:
             f.write(final_html)
         
-        print("中文版主页生成完成")
+        print(f"生成完成: {os.path.basename(output_path)}")
+        return True
         
     except Exception as e:
-        print(f"生成中文版主页时出错: {e}")
-        # 如果模板处理失败，使用备用的硬编码版本
-        generate_fallback_html(docs_dir)
-    
-    # 生成英文版主页
-    try:
-        # 读取英文模板文件
-        with open('templates/base_en.html', 'r', encoding='utf-8') as f:
-            base_en_template_content = f.read()
-        
-        with open('templates/index_en.html', 'r', encoding='utf-8') as f:
-            index_en_template_content = f.read()
-        
-        # 处理英文模板
-        processed_base_en = base_en_template_content.replace('{% load static %}', '')
-        processed_base_en = processed_base_en.replace("{% static '", "static/")
-        processed_base_en = processed_base_en.replace("' %}", "")
-        processed_base_en = processed_base_en.replace('{% static "', 'static/')
-        processed_base_en = processed_base_en.replace('" %}', '')
-        
-        processed_index_en = index_en_template_content.replace('{% load static %}', '')
-        processed_index_en = processed_index_en.replace("{% static '", "static/")
-        processed_index_en = processed_index_en.replace("' %}", "")
-        processed_index_en = processed_index_en.replace('{% static "', 'static/')
-        processed_index_en = processed_index_en.replace('" %}', '')
-        
-        # 替换Django URL标签
-        processed_index_en = processed_index_en.replace('href="/talk/latex/"', 'href="talk_detail_en.html"')
-        processed_index_en = processed_index_en.replace('href="/static/', 'href="static/')
-        processed_index_en = processed_index_en.replace('src="/static/', 'src="static/')
-        
-        # 提取content部分
-        content_start_en = processed_index_en.find('{% block content %}') + len('{% block content %}')
-        content_end_en = processed_index_en.find('{% endblock %}')
-        content_en = processed_index_en[content_start_en:content_end_en].strip()
-        
-        # 替换base模板中的block
-        final_html_en = processed_base_en.replace('{% block title %}{% endblock %}', 'Yue Yihua - Personal Academic Homepage')
-        final_html_en = final_html_en.replace('{% block content %}{% endblock %}', content_en)
-        
-        # 写入英文版主页
-        with open(os.path.join(docs_dir, 'index_en.html'), 'w', encoding='utf-8') as f:
-            f.write(final_html_en)
-        
-        print("英文版主页生成完成")
-        
-    except Exception as e:
-        print(f"生成英文版主页时出错: {e}")
-    
-    # 生成其他页面
-    generate_other_pages(docs_dir)
+        print(f"生成 {os.path.basename(output_path)} 时出错: {e}")
+        return False
 
-def generate_other_pages(docs_dir):
-    """生成其他页面"""
+def generate_standalone_page(template_path, output_path):
+    """生成独立页面（不继承base模板的页面）"""
+    try:
+        with open(template_path, 'r', encoding='utf-8') as f:
+            template_content = f.read()
+        
+        # 处理模板
+        processed_content = process_django_template(template_content, is_base=True)
+        
+        # 写入文件
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write(processed_content)
+        
+        print(f"生成完成: {os.path.basename(output_path)}")
+        return True
+        
+    except Exception as e:
+        print(f"生成 {os.path.basename(output_path)} 时出错: {e}")
+        return False
+
+def generate_html_files(docs_dir):
+    """从Django模板生成HTML文件"""
+    templates_dir = 'templates'
+    
+    # 生成主要页面（使用模板继承）
     pages = [
+        # (base_template, content_template, output_file, page_title)
+        ('base.html', 'index.html', 'index.html', '乐绎华 - 个人学术主页'),
+        ('base_en.html', 'index_en.html', 'index_en.html', 'Yue Yihua - Personal Academic Homepage'),
+    ]
+    
+    for base_template, content_template, output_file, page_title in pages:
+        base_path = os.path.join(templates_dir, base_template)
+        content_path = os.path.join(templates_dir, content_template)
+        output_path = os.path.join(docs_dir, output_file)
+        
+        generate_page_from_templates(base_path, content_path, output_path, page_title)
+    
+    # 生成独立页面（不继承base模板）
+    standalone_pages = [
         ('talk_detail.html', 'talk_detail.html'),
         ('talk_detail_en.html', 'talk_detail_en.html'),
         ('mathematica_project.html', 'mathematica_project.html'),
@@ -138,59 +158,72 @@ def generate_other_pages(docs_dir):
         ('football_hobby_en.html', 'football_hobby_en.html'),
     ]
     
-    for template_name, output_name in pages:
-        try:
-            # 读取模板文件
-            with open(f'templates/{template_name}', 'r', encoding='utf-8') as f:
-                template_content = f.read()
-            
-            # 处理静态文件路径
-            processed_content = template_content.replace('{% load static %}', '')
-            processed_content = processed_content.replace("{% static '", "static/")
-            processed_content = processed_content.replace("' %}", "")
-            processed_content = processed_content.replace('{% static "', 'static/')
-            processed_content = processed_content.replace('" %}', '')
-            
-            # 替换URL标签
-            processed_content = processed_content.replace('href="/static/', 'href="static/')
-            processed_content = processed_content.replace('src="/static/', 'src="static/')
-            processed_content = processed_content.replace('href="/"', 'href="index.html"')
-            processed_content = processed_content.replace('href="/en/"', 'href="index_en.html"')
-            
-            # 写入文件
-            with open(os.path.join(docs_dir, output_name), 'w', encoding='utf-8') as f:
-                f.write(processed_content)
-            
-            print(f"{output_name} 生成完成")
-            
-        except Exception as e:
-            print(f"生成 {output_name} 时出错: {e}")
+    for template_file, output_file in standalone_pages:
+        template_path = os.path.join(templates_dir, template_file)
+        output_path = os.path.join(docs_dir, output_file)
+        
+        if os.path.exists(template_path):
+            generate_standalone_page(template_path, output_path)
+        else:
+            print(f"模板文件不存在: {template_path}")
 
-def generate_fallback_html(docs_dir):
-    """备用的硬编码HTML生成函数"""
-    # 这里保留原来的硬编码HTML作为备用
-    print("使用备用HTML生成方法")
-    # ... 原来的硬编码HTML内容 ...
+def create_redirect_pages(docs_dir):
+    """创建重定向页面以支持URL结构"""
+    # 创建目录结构以支持Django URL模式
+    subdirs = ['cn', 'en', 'talk', 'project', 'hobby']
+    for subdir in subdirs:
+        subdir_path = os.path.join(docs_dir, subdir)
+        os.makedirs(subdir_path, exist_ok=True)
+    
+    # 创建重定向页面
+    redirects = [
+        ('cn/index.html', '../index.html'),
+        ('en/index.html', '../index_en.html'),
+        ('talk/latex/index.html', '../../talk_detail.html'),
+        ('project/mathematica/index.html', '../../mathematica_project.html'),
+        ('hobby/football/index.html', '../../football_hobby.html'),
+    ]
+    
+    for redirect_file, target_url in redirects:
+        redirect_path = os.path.join(docs_dir, redirect_file)
+        os.makedirs(os.path.dirname(redirect_path), exist_ok=True)
+        
+        redirect_html = f'''<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0;url={target_url}">
+    <title>重定向中...</title>
+</head>
+<body>
+    <p>正在重定向到 <a href="{target_url}">{target_url}</a></p>
+</body>
+</html>'''
+        
+        with open(redirect_path, 'w', encoding='utf-8') as f:
+            f.write(redirect_html)
+    
+    print("重定向页面创建完成")
 
 if __name__ == '__main__':
-    # 确定项目根目录（包含 manage.py 的目录）
+    # 确定项目根目录
     project_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(project_dir)
 
     # 设置Django环境
     setup_django()
 
-    # 安装 Python 依赖
+    # 安装Python依赖
     run("pip install -r requirements.txt")
 
-    # 收集静态文件到 STATIC_ROOT
+    # 收集静态文件
     run("python manage.py collectstatic --noinput")
 
     # 生成目录和路径
     docs_dir = os.path.join(project_dir, 'docs')
     static_src = os.path.join(project_dir, 'staticfiles')
 
-    # 清理并创建 docs 目录
+    # 清理并创建docs目录
     if os.path.exists(docs_dir):
         shutil.rmtree(docs_dir)
     os.makedirs(docs_dir)
@@ -198,8 +231,13 @@ if __name__ == '__main__':
     # 从Django模板生成HTML文件
     generate_html_files(docs_dir)
 
-    # 拷贝静态资源到 docs/static
+    # 创建重定向页面
+    create_redirect_pages(docs_dir)
+
+    # 拷贝静态资源到docs/static
     dest_static = os.path.join(docs_dir, 'static')
     shutil.copytree(static_src, dest_static)
 
-    print("文档生成完成: docs 目录已更新，请将其推送到 GitHub 并配置 Pages 源为 /docs")
+    print("文档生成完成！")
+    print("现在 docs/ 目录中的静态网站应该与本地 Django 网站保持一致。")
+    print("请将更改推送到 GitHub 以更新静态网站。")

@@ -1011,13 +1011,13 @@ body.auto-theme.system-dark .contact-link.github i {
     height: 2px;
     background: linear-gradient(90deg, #007bff, #0056b3);
     transition: width 0.3s ease;
-}
-
+    }
+    
 .clickable-talk:hover .talk-link-text {
     background: rgba(var(--accent-color-rgb), 0.2);
     transform: translateX(-4px);
-}
-
+    }
+    
 .clickable-talk:hover .talk-link-text::after {
     width: calc(100% - 2rem);
 }
