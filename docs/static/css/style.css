@@ -1333,7 +1333,7 @@ body.auto-theme.system-dark .contact-link.github i {
 /* Theme Toggle Button */
 .theme-toggle {
     position: fixed;
-    top: 20px;
+    top: calc(1.2rem + 30px - 20px); /* header padding + navbar高度的一半 - 按钮高度的一半 */
     right: 20px;
     z-index: 9999;
     background: var(--card-bg);
@@ -1778,7 +1778,7 @@ body.auto-theme.system-dark .animated-background::before {
 
 @media (max-width: 768px) {
     .theme-toggle {
-        top: 15px;
+        top: calc(1.2rem + 30px - 18px); /* 移动端稍微调整 */
         right: 15px;
         padding: 6px 12px;
     }

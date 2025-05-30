@@ -10,6 +10,524 @@
     <!-- Heroicons -->
     <script src="https://unpkg.com/@heroicons/react@1.0.6/outline"></script>
     <style>
+        /* 重置style.css中的旧header样式，避免与新导航栏冲突 */
+        header {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            position: static !important;
+            top: auto !important;
+            z-index: auto !important;
+            transition: none !important;
+            backdrop-filter: none !important;
+            box-shadow: none !important;
+        }
+
+        /* CSS变量定义 */
+        :root {
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --accent-color: #007bff;
+            --accent-color-rgb: 0, 123, 255;
+            --card-bg: 255, 255, 255;
+        }
+
+        .dark-theme {
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --accent-color: #4dabf7;
+            --accent-color-rgb: 77, 171, 247;
+            --card-bg: 42, 42, 62;
+        }
+
+        /* 简约型导航栏设计 */
+        .navbar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .dark-theme .navbar-container {
+            background: rgba(31, 41, 55, 0.95);
+            border-bottom-color: #374151;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+            position: relative;
+        }
+
+        .logo {
+            flex: none;
+            text-align: left;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .nav-center {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: none;
+        }
+
+        /* 简约切换按钮样式 */
+        .language-switcher,
+        .theme-switcher {
+            position: relative;
+            display: inline-block;
+        }
+
+        .switcher-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .dark-theme .switcher-btn {
+            background: #374151;
+            border-color: #4b5563;
+        }
+
+        .switcher-btn:hover {
+            background: #f3f4f6;
+            border-color: var(--accent-color);
+        }
+
+        .dark-theme .switcher-btn:hover {
+            background: #4b5563;
+        }
+
+        .switcher-btn i {
+            font-size: 16px;
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+        }
+
+        .switcher-btn:hover i {
+            color: var(--accent-color);
+        }
+
+        /* 简约下拉菜单样式 */
+        .switcher-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 120px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.2s ease;
+            z-index: 1000;
+            padding: 4px;
+        }
+
+        .language-switcher .switcher-dropdown {
+            left: 0;
+            right: auto;
+        }
+
+        .switcher-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dark-theme .switcher-dropdown {
+            background: #374151;
+            border-color: #4b5563;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .dropdown-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 400;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-option:hover {
+            background: #f3f4f6;
+            color: var(--accent-color);
+        }
+
+        .dark-theme .dropdown-option:hover {
+            background: #4b5563;
+        }
+
+        .dropdown-option.active {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .dropdown-option i.fa-check {
+            font-size: 12px;
+            color: var(--accent-color);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .dropdown-option.active i.fa-check {
+            opacity: 1;
+        }
+
+        .dropdown-option i.fa-sun,
+        .dropdown-option i.fa-moon,
+        .dropdown-option i.fa-globe {
+            font-size: 14px;
+            color: var(--accent-color);
+        }
+
+        /* 简约汉堡菜单按钮 */
+        .nav-toggle {
+            display: none;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .dark-theme .nav-toggle {
+            background: #374151;
+            border-color: #4b5563;
+        }
+
+        .nav-toggle:hover {
+            background: #f3f4f6;
+        }
+
+        .dark-theme .nav-toggle:hover {
+            background: #4b5563;
+        }
+
+        .hamburger-line {
+            width: 18px;
+            height: 2px;
+            background: var(--text-secondary);
+            border-radius: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-toggle:hover .hamburger-line {
+            background: var(--accent-color);
+        }
+
+        .nav-toggle.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .nav-toggle.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* 简约导航菜单样式 */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu li a {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 400;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-menu li a:hover {
+            background: #f3f4f6;
+            color: var(--accent-color);
+        }
+
+        .dark-theme .nav-menu li a:hover {
+            background: #4b5563;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+                height: 56px;
+                justify-content: space-between;
+            }
+            
+            .logo {
+                flex: none;
+                text-align: left;
+            }
+            
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .nav-center {
+                display: none;
+            }
+            
+            .nav-right {
+                position: static;
+                right: auto;
+                gap: 0.5rem;
+            }
+            
+            .nav-toggle {
+                display: flex;
+                order: 3;
+            }
+            
+            .language-switcher {
+                order: 1;
+            }
+            
+            .theme-switcher {
+                order: 2;
+            }
+            
+            .switcher-btn {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .switcher-btn i {
+                font-size: 14px;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: calc(100% + 8px);
+                left: 1rem;
+                right: 1rem;
+                background: white;
+                border: 1px solid #d1d5db;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                padding: 8px;
+                flex-direction: column;
+                gap: 4px;
+                z-index: 1000;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .nav-menu li {
+                width: 100%;
+            }
+            
+            .nav-menu li a {
+                display: block;
+                text-align: center;
+                padding: 12px 16px;
+                font-size: 14px;
+                border-radius: 4px;
+            }
+            
+            .dark-theme .nav-menu {
+                background: #374151;
+                border-color: #4b5563;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        /* 确保页面内容不被固定导航栏遮挡 */
+        body {
+            padding-top: 64px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 56px;
+            }
+        }
+
+        /* 修复锚点跳转位置 - 确保跳转到标题而不是被导航栏遮挡 */
+        section[id] {
+            scroll-margin-top: 80px; /* 桌面端偏移，稍微大于导航栏高度 */
+        }
+
+        @media (max-width: 768px) {
+            section[id] {
+                scroll-margin-top: 70px; /* 移动端偏移 */
+            }
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Ensure the entire page is dark mode */
+        html, body {
+            margin: 0;
+            padding: 0;
+            padding-top: 50px; /* 减少顶部内边距，调整为50px */
+            min-height: 100vh;
+            transition: background-color 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            html, body {
+                padding-top: 45px; /* 移动端顶部内边距调整为45px */
+            }
+        }
+        
+        /* Dark theme text clarity */
+        .dark-theme {
+            color: #ffffff; /* White text */
+            background-color: #1a1a2e; /* Deep blue-black background, similar to Hugo Academic Pages dark mode */
+        }
+        
+        /* Ensure html and body are dark mode */
+        .dark-theme html,
+        .dark-theme body {
+            background-color: #1a1a2e !important;
+            color: #ffffff !important;
+        }
+        
+        /* All text elements in dark mode */
+        .dark-theme a {
+            color: #ffffff; /* White links */
+        }
+        .dark-theme p, 
+        .dark-theme li, 
+        .dark-theme span, 
+        .dark-theme div,
+        .dark-theme label,
+        .dark-theme input,
+        .dark-theme textarea,
+        .dark-theme select {
+            color: #ffffff; /* White text for paragraphs and lists */
+        }
+        .dark-theme h1, 
+        .dark-theme h2, 
+        .dark-theme h3, 
+        .dark-theme h4, 
+        .dark-theme h5, 
+        .dark-theme h6 {
+            color: #ffffff; /* White headings */
+        }
+        
+        /* Navigation text */
+        .dark-theme .nav-menu li a {
+            color: #ffffff;
+        }
+        
+        .dark-theme .logo h1 {
+            color: #ffffff;
+        }
+        
+        /* Dropdown menu text */
+        .dark-theme .dropdown-option {
+            color: #ffffff;
+        }
+        
+        /* Footer text */
+        .dark-theme footer {
+            color: #ffffff;
+        }
+        
+        .dark-theme footer p {
+            color: #ffffff;
+        }
+        
+        /* Ensure all content area text is white */
+        .dark-theme main,
+        .dark-theme main *,
+        .dark-theme .content,
+        .dark-theme .content * {
+            color: #ffffff;
+        }
+        
+        /* Special elements text color */
+        .dark-theme .card,
+        .dark-theme .card *,
+        .dark-theme .section,
+        .dark-theme .section *,
+        .dark-theme .talk-item,
+        .dark-theme .talk-item *,
+        .dark-theme .award-item,
+        .dark-theme .award-item *,
+        .dark-theme .skill-category,
+        .dark-theme .skill-category *,
+        .dark-theme .contact-info,
+        .dark-theme .contact-info * {
+            color: #ffffff;
+        }
+        
+        /* Form elements */
+        .dark-theme input,
+        .dark-theme textarea,
+        .dark-theme select {
+            background-color: #2a2a3e;
+            border-color: #404060;
+            color: #ffffff;
+        }
+        
+        /* Button text */
+        .dark-theme button {
+            color: #ffffff;
+        }
+
         .heroicon {
             width: 1em;
             height: 1em;
@@ -86,6 +604,11 @@
             box-shadow: 0 8px 32px rgba(52, 73, 94, 0.3);
         }
         
+        .bio-icon.telegram {
+            background: linear-gradient(135deg, #0088cc, #006699);
+            box-shadow: 0 8px 32px rgba(0, 136, 204, 0.3);
+        }
+        
         .bio-icon.talk {
             background: linear-gradient(135deg, #9b59b6, #8e44ad);
             box-shadow: 0 8px 32px rgba(155, 89, 182, 0.3);
@@ -103,8 +626,9 @@
             transition: all 0.1s ease;
         }
         
-        .bio-icon i, .bio-icon .heroicon {
+        .bio-icon i, .bio-icon .heroicon, .bio-icon svg {
             color: white;
+            fill: white;
             font-size: 1.2rem;
             z-index: 1;
             position: relative;
@@ -130,6 +654,11 @@
             box-shadow: 0 8px 32px rgba(52, 73, 94, 0.4);
         }
         
+        .dark-theme .bio-icon.telegram {
+            background: linear-gradient(135deg, #0088cc, #006699);
+            box-shadow: 0 8px 32px rgba(0, 136, 204, 0.4);
+        }
+        
         .dark-theme .bio-icon.talk {
             background: linear-gradient(135deg, #9b59b6, #8e44ad);
             box-shadow: 0 8px 32px rgba(155, 89, 182, 0.4);
@@ -153,318 +682,7 @@
             height: 1.2rem;
             stroke: white;
         }
-        
-        /* Language switcher */
-        .language-switcher {
-            position: fixed;
-            top: 20px; /* 与主题切换器保持同一高度 */
-            left: 20px;
-            z-index: 9998;
-            display: inline-block;
-        }
-        
-        .lang-btn {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            padding: 8px 16px; /* 与主题切换器保持相同的padding */
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px; /* 与主题切换器保持相同的gap */
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 与主题切换器保持相同的阴影 */
-            backdrop-filter: blur(10px);
-            color: var(--text-primary);
-            font-size: 14px; /* 与主题切换器保持相同的字体大小 */
-            font-weight: 500;
-            min-width: auto;
-            justify-content: center;
-            height: 40px; /* 设置固定高度与主题切换器对齐 */
-        }
 
-        .lang-btn:hover {
-            transform: translateY(-2px); /* 与主题切换器保持相同的悬停效果 */
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            border-color: var(--accent-color);
-        }
-
-        .lang-btn i.fa-globe {
-            color: var(--accent-color);
-            font-size: 16px; /* 与主题切换器图标大小保持一致 */
-        }
-
-        .lang-btn i.fa-chevron-down {
-            font-size: 12px;
-            transition: transform 0.3s ease;
-            color: var(--text-secondary);
-        }
-
-        .language-switcher:hover .lang-btn i.fa-chevron-down,
-        .lang-dropdown.show ~ .lang-btn i.fa-chevron-down {
-            transform: rotate(180deg);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            min-width: 140px;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            margin-top: 8px;
-            backdrop-filter: blur(15px);
-        }
-
-        .lang-dropdown.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .lang-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border-radius: 8px;
-            margin: 4px;
-        }
-
-        .lang-option:hover {
-            background-color: var(--bg-secondary);
-            color: var(--accent-color);
-            transform: translateX(4px);
-        }
-
-        .lang-option.active {
-            color: var(--accent-color);
-            font-weight: 600;
-            background-color: rgba(var(--accent-color-rgb), 0.1);
-        }
-
-        .lang-option.active i.fa-check {
-            color: var(--accent-color);
-        }
-
-        .lang-option:not(.active) i.fa-check {
-            opacity: 0;
-        }
-
-        /* Mobile responsive adjustments */
-        @media (max-width: 768px) {
-            .language-switcher {
-                top: 15px; /* 与主题切换器保持同一高度 */
-                left: 15px;
-            }
-            
-            .lang-btn {
-                padding: 6px 12px;
-                font-size: 12px;
-                height: 36px; /* 移动端稍微小一点 */
-            }
-            
-            .lang-dropdown {
-                min-width: 120px;
-            }
-            
-            .lang-option {
-                padding: 10px 12px;
-                font-size: 12px;
-            }
-        }
-        
-        /* Theme Switcher */
-        .theme-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9998;
-            display: inline-block;
-        }
-        
-        .theme-btn {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            padding: 8px 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            color: var(--text-primary);
-            font-size: 14px;
-            font-weight: 500;
-            min-width: auto;
-            justify-content: center;
-            height: 40px;
-        }
-
-        .theme-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            border-color: var(--accent-color);
-        }
-
-        .theme-btn i.fa-sun {
-            color: var(--accent-color);
-            font-size: 16px;
-        }
-
-        .theme-btn i.fa-moon {
-            color: var(--accent-color);
-            font-size: 16px;
-        }
-
-        .theme-btn i.fa-chevron-down {
-            font-size: 12px;
-            transition: transform 0.3s ease;
-            color: var(--text-secondary);
-        }
-
-        .theme-switcher:hover .theme-btn i.fa-chevron-down,
-        .theme-dropdown.show ~ .theme-btn i.fa-chevron-down {
-            transform: rotate(180deg);
-        }
-
-        .theme-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            min-width: 140px;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            margin-top: 8px;
-            backdrop-filter: blur(15px);
-        }
-
-        .theme-dropdown.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .theme-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border-radius: 8px;
-            margin: 4px;
-        }
-
-        .theme-option:hover {
-            background-color: var(--bg-secondary);
-            color: var(--accent-color);
-            transform: translateX(-4px);
-        }
-
-        .theme-option.active {
-            color: var(--accent-color);
-            font-weight: 600;
-            background-color: rgba(var(--accent-color-rgb), 0.1);
-        }
-
-        .theme-option.active i.fa-check {
-            color: var(--accent-color);
-        }
-
-        .theme-option:not(.active) i.fa-check {
-            opacity: 0;
-        }
-
-        .theme-option i.fa-sun,
-        .theme-option i.fa-moon {
-            color: var(--accent-color);
-            width: 16px;
-            text-align: center;
-        }
-
-        /* Mobile responsive adjustments */
-        @media (max-width: 768px) {
-            .theme-switcher {
-                top: 15px;
-                right: 15px;
-            }
-            
-            .theme-btn {
-                padding: 6px 12px;
-                font-size: 12px;
-                height: 36px;
-            }
-            
-            .theme-dropdown {
-                min-width: 120px;
-            }
-            
-            .theme-option {
-                padding: 10px 12px;
-                font-size: 12px;
-            }
-        }
-        
-        /* Ensure the entire page is dark mode */
-        html, body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            transition: background-color 0.3s ease;
-        }
-        
-        /* Dark theme text clarity */
-        .dark-theme {
-            color: #ffffff; /* White text */
-            background-color: #1a1a2e; /* Deep blue-black background, similar to Hugo Academic Pages dark mode */
-        }
-        
-        /* Ensure html and body are dark mode */
-        .dark-theme html,
-        .dark-theme body {
-            background-color: #1a1a2e !important;
-        }
-        
-        .dark-theme a {
-            color: #ffffff; /* White links */
-        }
-        .dark-theme p, .dark-theme li, .dark-theme span {
-            color: #ffffff; /* White text for paragraphs and lists */
-        }
-        .dark-theme h1, .dark-theme h2, .dark-theme h3, .dark-theme h4, .dark-theme h5, .dark-theme h6 {
-            color: #ffffff; /* White headings */
-        }
-        .dark-theme .award-item h3, .dark-theme .talk-item h3, .dark-theme .project-item h3 {
-            color: #ffffff; /* Ensure award, talk, and project titles are white */
-        }
-        .dark-theme .award-item p, .dark-theme .talk-item p, .dark-theme .project-item p {
-            color: #e0e0e0; /* Slightly lighter gray for description text */
-        }
         /* Block and card styling inspired by Resume Theme */
         .card, .section, .talk-item, .award-item, .skill-category {
             background-color: #f5f5f5; /* Light gray background, similar to Resume Theme block color */
@@ -586,6 +804,13 @@
         .dark-theme .project-link-text::after {
             background: linear-gradient(90deg, #4dabf7, #339af0);
         }
+
+        /* Enhanced talk section styling */
+        .talks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
         /* Clickable talk styling - same as project styling */
         .talk-item-link {
             text-decoration: none;
@@ -702,10 +927,8 @@
         
         /* Enhanced talk meta information styling */
         .talk-meta {
-            margin: 0 0 1rem 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
+            margin: 0.8rem 0.5rem 1rem 0.5rem;
+            gap: 0.5rem;
         }
         
         .talk-time, .talk-location {
@@ -761,6 +984,7 @@
         .clickable-talk:hover .talk-link-text::after {
             width: 100%;
         }
+        
         /* Dark theme for clickable talks */
         .dark-theme .clickable-talk {
             background: linear-gradient(145deg, #2a2a3e, #1f1f2e);
@@ -787,12 +1011,13 @@
         .dark-theme .talk-link-text::after {
             background: linear-gradient(90deg, #4dabf7, #339af0);
         }
-        .dark-theme .clickable-talk h3 {
+        .dark-theme .talk-header {
+            border-bottom-color: rgba(77, 171, 247, 0.2);
+        }
+        .dark-theme .talk-header h3 {
             color: #ffffff;
         }
-        .dark-theme .clickable-talk p {
-            color: #e0e0e0;
-        }
+        
         /* Dark theme for enhanced talk styling */
         .dark-theme .talk-time, .dark-theme .talk-location {
             color: #b8c5d1;
@@ -806,7 +1031,7 @@
             color: #b8c5d1;
         }
         
-        /* Responsive design for talks */
+        /* Responsive design for talk meta */
         @media (max-width: 768px) {
             .clickable-talk {
                 padding: 1.5rem 2rem;
@@ -830,7 +1055,7 @@
                 font-size: 0.85rem;
             }
         }
-        
+
         /* Hobby link styling */
         .hobby-link {
             color: var(--accent-color, #007bff);
@@ -1002,15 +1227,6 @@
         .dark-theme .clickable-award p {
             color: #e0e0e0;
         }
-        .dark-theme .talk-header {
-            border-bottom-color: rgba(77, 171, 247, 0.2);
-        }
-        .dark-theme .talk-header h3 {
-            color: #ffffff;
-        }
-        .dark-theme .clickable-talk h3 {
-            color: #ffffff;
-        }
         /* Enhanced skill category styling - same as other blocks */
         .skill-category {
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1167,176 +1383,367 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
             border-color: rgba(77, 171, 247, 0.4);
         }
-
-        .navbar {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 60px;
-            position: relative; /* 添加相对定位 */
+        
+        /* 确保所有子元素都是白色文字 */
+        .dark-theme * {
+            color: #ffffff !important;
         }
-
-        .logo {
-            margin-left: 80px; /* 向右移动姓名，避免被语言切换器挡住 */
-        }
-
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 0;
-            color: var(--text-primary);
-            transition: color 0.3s ease;
-            letter-spacing: -0.02em;
-        }
-
-        .nav-toggle {
-            display: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            align-items: center;
-            gap: 1.8rem;
-            margin-right: 80px; /* 向左移动导航链接，避免被主题切换器挡住 */
-        }
-
-        /* Mobile responsive adjustments */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 0 1rem;
-                height: 50px;
-            }
-            
-            .logo {
-                margin-left: 60px; /* 移动端减少左边距 */
-            }
-            
-            .logo h1 {
-                font-size: 1.5rem;
-            }
-            
-            .nav-toggle {
-                display: block;
-                margin-right: 60px; /* 移动端调整右边距 */
-            }
-            
-            .nav-menu {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--navbar-bg);
-                border-bottom: 1px solid var(--border-color);
-                padding: 1rem 0;
-                flex-direction: column;
-                gap: 0;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                backdrop-filter: blur(10px);
-                margin-right: 0; /* 移动端重置右边距 */
-            }
-            
-            .nav-menu.active {
-                display: flex;
-            }
-            
-            .nav-menu li {
-                margin: 0;
-                width: 100%;
-            }
-            
-            .nav-menu li a {
-                padding: 1rem 2rem;
-                border-radius: 0;
-                font-size: 1rem;
-                border-bottom: 1px solid var(--border-color);
-            }
-            
-            .nav-menu li:last-child a {
-                border-bottom: none;
-            }
+        
+        /* 但是保留一些特殊颜色，比如强调色 */
+        .dark-theme .switcher-btn i:hover,
+        .dark-theme .dropdown-option i.fa-sun,
+        .dark-theme .dropdown-option i.fa-moon,
+        .dark-theme .dropdown-option i.fa-globe,
+        .dark-theme .talk-time i, 
+        .dark-theme .talk-location i,
+        .dark-theme .dropdown-option.active,
+        .dark-theme .lang-option.active,
+        .dark-theme .theme-option.active {
+            color: var(--accent-color) !important;
         }
     </style>
 </head>
 <body>
-         <!-- Language Switcher -->
-     <div class="language-switcher">
-        <button class="lang-btn" id="lang-btn">
-            <i class="fas fa-globe"></i>
-            <span>English</span>
-            <i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="lang-dropdown" id="lang-dropdown">
-            <a href="index.html" class="lang-option">
-                中文
-            </a>
-            <a href="index_en.html" class="lang-option active">
-                <i class="fas fa-check"></i>
-                English
-            </a>
-        </div>
-     </div>
-
-    <!-- Theme Toggle Button -->
-    <div class="theme-switcher">
-        <button class="theme-btn" id="theme-btn">
-        <i class="fas fa-sun" id="themeIcon"></i>
-            <span id="themeText">Light</span>
-            <i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="theme-dropdown" id="theme-dropdown">
-            <a href="#" class="theme-option" data-theme="light">
-                <i class="fas fa-check"></i>
-                <i class="fas fa-sun"></i>
-                Light
-            </a>
-            <a href="#" class="theme-option" data-theme="dark">
-                <i class="fas fa-check"></i>
-                <i class="fas fa-moon"></i>
-                Dark
-            </a>
-        </div>
-    </div>
-
     <header>
-        <nav class="navbar">
-            <div class="logo">
-                <h1>Yue Yihua</h1>
+        <nav class="navbar-container">
+            <div class="navbar">
+                <!-- 左侧logo -->
+                <div class="logo">
+                    <h1>Yue Yihua</h1>
+                </div>
+                
+                <!-- 中间导航菜单 -->
+                <div class="nav-center">
+                    <ul class="nav-menu" id="navMenu">
+                        <li><a href="/about/#bio">About</a></li>
+                        <li><a href="/about/#talks">Talks</a></li>
+                        <li><a href="/about/#projects">Projects</a></li>
+                        <li><a href="/about/#awards">Awards</a></li>
+                        <li><a href="/about/#skills">Skills</a></li>
+                        <li><a href="/about/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- 右侧区域：语言切换器、主题切换器和移动端菜单按钮 -->
+                <div class="nav-right">
+                    <!-- 语言切换器 -->
+                    <div class="language-switcher">
+                        <button class="switcher-btn lang-btn" id="lang-btn">
+                            <i class="fas fa-globe"></i>
+                        </button>
+                        <div class="switcher-dropdown lang-dropdown" id="lang-dropdown">
+                            <a href="/cn/" class="dropdown-option">
+                                <span>中文</span>
+                            </a>
+                            <a href="/en/" class="dropdown-option active">
+                                <i class="fas fa-check"></i>
+                                <span>English</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 主题切换器 -->
+                    <div class="theme-switcher">
+                        <button class="switcher-btn theme-btn" id="theme-btn">
+                            <i class="fas fa-sun" id="themeIcon"></i>
+                        </button>
+                        <div class="switcher-dropdown theme-dropdown" id="theme-dropdown">
+                            <a href="#" class="dropdown-option" data-theme="light">
+                                <i class="fas fa-check"></i>
+                                <i class="fas fa-sun"></i>
+                                <span>Light</span>
+                            </a>
+                            <a href="#" class="dropdown-option" data-theme="dark">
+                                <i class="fas fa-check"></i>
+                                <i class="fas fa-moon"></i>
+                                <span>Dark</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 移动端菜单切换按钮 -->
+                    <div class="nav-toggle" id="navToggle">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </div>
+                </div>
             </div>
-            <div class="nav-toggle" id="navToggle">
-                <i class="fas fa-bars"></i>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="/en/about/#bio">About</a></li>
-                <li><a href="/en/about/#research">Research</a></li>
-                <li><a href="/en/about/#talks">Talks</a></li>
-                <li><a href="/en/about/#awards">Awards</a></li>
-                <li><a href="/en/about/#skills">Skills</a></li>
-                <li><a href="/en/about/#contact">Contact</a></li>
-            </ul>
         </nav>
     </header>
     <main>
-        {% block content %}
-        {% endblock %}
+        <section id="bio" class="hero">
+    <div class="hero-content">
+        <div class="profile">
+            <h1>👋 Hello, I'm Yue Yihua</h1>
+            <h2>Mathematics Undergraduate, Sun Yat-sen University</h2>
+            <p>I am a passionate mathematics undergraduate student, about to enter my junior year. I am particularly enthusiastic about exploring Partial Differential Equations, Advanced Probability Theory, and Algebraic Geometry.</p>
+            <div class="interests">
+                <h3>Research Interests</h3>
+                <ul>
+                    <li>Partial Differential Equations</li>
+                    <li>Probability Theory</li>
+                    <li>Algebraic Geometry</li>
+                </ul>
+            </div>
+            <div class="education">
+                <h3>Education</h3>
+                <ul>
+                    <li><strong>Bachelor of Mathematics</strong> - Sun Yat-sen University (September 2023 - Present)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="profile-photo">
+            
+            <img src="static/images/profile.jpg" alt="Photo of Yue Yihua" class="tilted-photo">
+            
+            <!-- Contact Icons under photo -->
+            <div class="bio-contact-icons">
+                <a href="mailto:yueyh@mail2.sysu.edu.cn" class="bio-icon email" title="Send Email">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                </a>
+                <a href="https://github.com/easygl1der" target="_blank" class="bio-icon github" title="GitHub">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                </a>
+                <a href="static/images/telegram_qr_luciferaser.png" target="_blank" class="bio-icon telegram" title="Telegram: @LUCIFERASER">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                </a>
+                <a href="static/files/resume_yueyihua.pdf" target="_blank" class="bio-icon resume" title="Download Resume">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="talks">
+    <h2>🎤 Talks & Presentations</h2>
+    <div class="talks-list">
+        <a href="talk_detail_en.html" class="talk-item-link">
+            <div class="talk-item clickable-talk">
+                <div class="talk-header">
+                    <h3>LaTeX Advanced Introduction Talk</h3>
+                    <div class="talk-image">
+                        
+                        <img src="static/images/latex-talk-1.jpg" alt="LaTeX Talk Scene" class="talk-photo">
+                    </div>
+                </div>
+                <div class="talk-content">
+                    <div class="talk-meta">
+                        <div class="talk-time">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>November 15, 2024 19:00-22:00</span>
+                        </div>
+                        <div class="talk-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Room 301, Building 392, Huang Chuanjing Hall</span>
+                        </div>
+                    </div>
+                    <div class="talk-description">
+                        <p>Introducing LaTeX fundamentals to new students, including basic functions, installation methods, usage tips, etc. This event is jointly organized by SPS Physics Association and Duxing Studio.</p>
+                    </div>
+                </div>
+                <div class="talk-action">
+                    <span class="talk-link-text">Click to view details →</span>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section id="projects">
+    <h2>📑 My Mathematica Project</h2>
+    <div class="projects-list">
+        <a href="/en/project/mathematica/" class="project-item-link">
+            <div class="project-item clickable-project">
+                <h3>Numerical Solution Research of Lane-Emden-Fowler Equations</h3>
+                <p><strong>Abstract:</strong> Lane-Emden-Fowler equations are a class of second-order nonlinear differential equations with wide applications in astrophysics, fluid mechanics, thermodynamics, and other fields, used to describe phenomena such as stellar structure and heat conduction.</p>
+                <p><strong>Keywords:</strong> Mathematica, Lane-Emden-Fowler equations, Numerical analysis, LH-HPM, Fractional derivatives</p>
+                <div class="project-action">
+                    <span class="project-link-text">Click to view details →</span>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section id="awards">
+    <h2>🏆 Awards & Honors</h2>
+    <div class="awards-list">
+        <a href="https://mp.weixin.qq.com/s/aZOxVwuB1lkwG64KBbxHVA" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>National Scholarship</h3>
+                <p>Academic Year 2023-2024 National Level Scholarship</p>
+                <div class="award-action">
+                    <span class="award-link-text">View Information →</span>
+                </div>
+            </div>
+        </a>
+        <div class="award-item clickable-award">
+            <h3>Sun Yat-sen University First-class Scholarship</h3>
+            <p>Academic Year 2023-2024 Sun Yat-sen University</p>
+        </div>
+        <a href="http://yau-contest.com/uploads/202505/27/1748321560229592.pdf" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>Winner - 2025 S.-T. Yau College Student Mathematics Contest (Analysis and Differential Equations Track)</h3>
+                <p>Yau Mathematical Sciences Center</p>
+                <div class="award-action">
+                    <span class="award-link-text">View Information →</span>
+                </div>
+            </div>
+        </a>
+        <a href="http://yau-contest.com/uploads/202505/27/1748321521986447.pdf" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>Finalist - 2025 S.-T. Yau College Student Mathematics Contest (Probability and Statistics Track)</h3>
+                <p>Yau Mathematical Sciences Center</p>
+                <div class="award-action">
+                    <span class="award-link-text">View Information →</span>
+                </div>
+            </div>
+        </a>
+        <a href="https://mp.weixin.qq.com/s/pLsQK1NePCJEvThrzODyEA" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>First Prize - The Final of the 15th Chinese Mathematics Competition for College Students (Junior Group)</h3>
+                <p>Ranked 8th Place Nationally</p>
+                <div class="award-action">
+                    <span class="award-link-text">View Information →</span>
+                </div>
+            </div>
+        </a>
+        <a href="https://mp.weixin.qq.com/s/Ub4s1H-VSKTMjKb46uZ1DQ" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>First Prize - The Final of the 16th Chinese Mathematics Competition for College Students (Senior Group)</h3>
+                <p>Chinese Mathematical Society</p>
+                <div class="award-action">
+                    <span class="award-link-text">View Information →</span>
+                </div>
+            </div>
+        </a>
+        <a href="https://mp.weixin.qq.com/s/a2dAGMuanNshS19gGiIrBg" target="_blank" class="award-item-link">
+            <div class="award-item clickable-award">
+                <h3>First Prize - The 16th Chinese Mathematics Competition for College Students (Preliminary)</h3>
+                <p>Ranked 1st Place in Guangdong Province</p>
+                <div class="award-action">
+                    <span class="award-link-text">View Information →</span>
+                </div>
+            </div>
+        </a>
+        <div class="award-item clickable-award">
+            <h3>Finalist - The 6th Alibaba Global Mathematics Competition</h3>
+            <p>Alibaba</p>
+        </div>
+        <div class="award-item clickable-award">
+            <h3>Honorable Mention - Mathematical Contest in Modeling</h3>
+            <p>Mathematical Contest in Modeling</p>
+        </div>
+        <div class="award-item clickable-award">
+            <h3>First Prize in Guangdong Province - Contemporary Undergraduate Mathematical Contest in Modeling</h3>
+            <p>Contemporary Undergraduate Mathematical Contest in Modeling Organizers</p>
+        </div>
+    </div>
+</section>
+
+<section id="skills">
+    <h2>💻 Skills & Interests</h2>
+    <div class="skills-grid">
+        <div class="skill-category">
+            <h3>Technical Skills</h3>
+            <ul>
+                <li class="skill-item">
+                    <svg class="heroicon skill-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                    </svg>
+                    <span>Mathematica</span>
+                </li>
+                <li class="skill-item">
+                    <svg class="heroicon skill-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    <span>LaTeX</span>
+                </li>
+                <li class="skill-item">
+                    <svg class="heroicon skill-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+                    </svg>
+                    <span>Python</span>
+                </li>
+            </ul>
+        </div>
+        <div class="skill-category">
+            <h3>Languages</h3>
+            <ul>
+                <li>Chinese (Native)</li>
+                <li>English (75%)</li>
+                <li>French (25%)</li>
+            </ul>
+        </div>
+        <div class="skill-category">
+            <h3>Hobbies</h3>
+            <ul>
+                <li><a href="/en/hobby/football/" class="hobby-link">Football</a></li>
+                <li>Enjoying Delicious Food</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <h2>📞 Contact Information</h2>
+    <div class="contact-info">
+        <div class="contact-links">
+            <a href="mailto:yueyh@mail2.sysu.edu.cn" class="contact-link email" title="Send Email">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                <span>yueyh@mail2.sysu.edu.cn</span>
+            </a>
+            <a href="https://github.com/easygl1der" target="_blank" class="contact-link github" title="View GitHub">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+                <span>github.com/easygl1der</span>
+            </a>
+            <a href="static/images/telegram_qr_luciferaser.png" target="_blank" class="contact-link telegram" title="Telegram QR Code">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+                <span>@LUCIFERASER</span>
+            </a>
+            <a href="static/files/resume_yueyihua.pdf" target="_blank" class="contact-link resume" title="Download Resume">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                </svg>
+                <span>Resume PDF</span>
+            </a>
+            <div class="contact-item school">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/>
+                </svg>
+                <span>Sun Yat-sen University</span>
+            </div>
+        </div>
+    </div>
+</section>
     </main>
     <footer>
-        <p>&copy; 2025 Yue Yihua. This work is licensed under CC BY NC ND 4.0.</p>
+        <p>&copy;  Yue Yihua. This website is licensed under CC BY NC ND 4.0.</p>
     </footer>
     <script>
         // Navigation toggle
-        document.getElementById('navToggle').addEventListener('click', function() {
-            document.getElementById('navMenu').classList.toggle('active');
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
         });
 
         // Language switcher functionality
@@ -1354,6 +1761,9 @@
         // 鼠标悬停显示下拉菜单
         languageSwitcher.addEventListener('mouseenter', () => {
             langDropdown.classList.add('show');
+            // 如果主题下拉菜单打开，关闭它
+            const themeDropdown = document.getElementById('theme-dropdown');
+            themeDropdown.classList.remove('show');
         });
 
         // 鼠标离开隐藏下拉菜单
@@ -1378,7 +1788,6 @@
         const themeDropdown = document.getElementById('theme-dropdown');
         const themeSwitcher = document.querySelector('.theme-switcher');
         const themeIcon = document.getElementById('themeIcon');
-        const themeText = document.getElementById('themeText');
         const body = document.body;
         const html = document.documentElement;
 
@@ -1392,11 +1801,7 @@
         themeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             // 直接切换主题
-            if (currentTheme === 'light') {
-                currentTheme = 'dark';
-            } else {
-                currentTheme = 'light';
-            }
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
             setTheme(currentTheme);
             localStorage.setItem('theme', currentTheme);
         });
@@ -1404,6 +1809,8 @@
         // 鼠标悬停显示下拉菜单
         themeSwitcher.addEventListener('mouseenter', () => {
             themeDropdown.classList.add('show');
+            // 如果语言下拉菜单打开，关闭它
+            langDropdown.classList.remove('show');
         });
 
         // 鼠标离开隐藏下拉菜单
@@ -1424,7 +1831,7 @@
         });
 
         // 处理下拉菜单选项点击
-        document.querySelectorAll('.theme-option').forEach(option => {
+        document.querySelectorAll('.dropdown-option[data-theme]').forEach(option => {
             option.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -1440,7 +1847,7 @@
             currentTheme = theme;
             
             // 更新主题选项的active状态
-            document.querySelectorAll('.theme-option').forEach(option => {
+            document.querySelectorAll('.dropdown-option[data-theme]').forEach(option => {
                 if (option.getAttribute('data-theme') === theme) {
                     option.classList.add('active');
                 } else {
@@ -1454,14 +1861,12 @@
                 html.classList.remove('dark-theme');
                 html.classList.add('light-theme');
                 themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'Light';
             } else if (theme === 'dark') {
                 body.classList.remove('light-theme');
                 body.classList.add('dark-theme');
                 html.classList.remove('light-theme');
                 html.classList.add('dark-theme');
                 themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'Dark';
             }
         }
     </script>

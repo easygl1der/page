@@ -10,6 +10,36 @@
     <!-- Heroicons -->
     <script src="https://unpkg.com/@heroicons/react@1.0.6/outline"></script>
     <style>
+        /* 重置style.css中的旧header样式，避免与新导航栏冲突 */
+        header {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            position: static !important;
+            top: auto !important;
+            z-index: auto !important;
+            transition: none !important;
+            backdrop-filter: none !important;
+            box-shadow: none !important;
+        }
+
+        /* CSS变量定义 */
+        :root {
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --accent-color: #007bff;
+            --accent-color-rgb: 0, 123, 255;
+            --card-bg: 255, 255, 255;
+        }
+
+        .dark-theme {
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --accent-color: #4dabf7;
+            --accent-color-rgb: 77, 171, 247;
+            --card-bg: 42, 42, 62;
+        }
+
         .heroicon {
             width: 1em;
             height: 1em;
@@ -86,6 +116,11 @@
             box-shadow: 0 8px 32px rgba(52, 73, 94, 0.3);
         }
         
+        .bio-icon.telegram {
+            background: linear-gradient(135deg, #0088cc, #006699);
+            box-shadow: 0 8px 32px rgba(0, 136, 204, 0.3);
+        }
+        
         .bio-icon.talk {
             background: linear-gradient(135deg, #9b59b6, #8e44ad);
             box-shadow: 0 8px 32px rgba(155, 89, 182, 0.3);
@@ -103,8 +138,9 @@
             transition: all 0.1s ease;
         }
         
-        .bio-icon i, .bio-icon .heroicon {
+        .bio-icon i, .bio-icon .heroicon, .bio-icon svg {
             color: white;
+            fill: white;
             font-size: 1.2rem;
             z-index: 1;
             position: relative;
@@ -128,6 +164,11 @@
         .dark-theme .bio-icon.github {
             background: linear-gradient(135deg, #34495e, #2c3e50);
             box-shadow: 0 8px 32px rgba(52, 73, 94, 0.4);
+        }
+        
+        .dark-theme .bio-icon.telegram {
+            background: linear-gradient(135deg, #0088cc, #006699);
+            box-shadow: 0 8px 32px rgba(0, 136, 204, 0.4);
         }
         
         .dark-theme .bio-icon.talk {
@@ -156,286 +197,29 @@
         
         /* Language switcher */
         .language-switcher {
-            position: fixed;
-            top: 20px; /* 与主题切换器保持同一高度 */
-            left: 20px;
-            z-index: 9998;
+            position: relative;
             display: inline-block;
-        }
-        
-        .lang-btn {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            padding: 8px 16px; /* 与主题切换器保持相同的padding */
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px; /* 与主题切换器保持相同的gap */
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 与主题切换器保持相同的阴影 */
-            backdrop-filter: blur(10px);
-            color: var(--text-primary);
-            font-size: 14px; /* 与主题切换器保持相同的字体大小 */
-            font-weight: 500;
-            min-width: auto;
-            justify-content: center;
-            height: 40px; /* 设置固定高度与主题切换器对齐 */
-        }
-
-        .lang-btn:hover {
-            transform: translateY(-2px); /* 与主题切换器保持相同的悬停效果 */
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            border-color: var(--accent-color);
-        }
-
-        .lang-btn i.fa-globe {
-            color: var(--accent-color);
-            font-size: 16px; /* 与主题切换器图标大小保持一致 */
-        }
-
-        .lang-btn i.fa-chevron-down {
-            font-size: 12px;
-            transition: transform 0.3s ease;
-            color: var(--text-secondary);
-        }
-
-        .language-switcher:hover .lang-btn i.fa-chevron-down,
-        .lang-dropdown.show ~ .lang-btn i.fa-chevron-down {
-            transform: rotate(180deg);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            min-width: 140px;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            margin-top: 8px;
-            backdrop-filter: blur(15px);
-        }
-
-        .lang-dropdown.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .lang-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border-radius: 8px;
-            margin: 4px;
-        }
-
-        .lang-option:hover {
-            background-color: var(--bg-secondary);
-            color: var(--accent-color);
-            transform: translateX(4px);
-        }
-
-        .lang-option.active {
-            color: var(--accent-color);
-            font-weight: 600;
-            background-color: rgba(var(--accent-color-rgb), 0.1);
-        }
-
-        .lang-option.active i.fa-check {
-            color: var(--accent-color);
-        }
-
-        .lang-option:not(.active) i.fa-check {
-            opacity: 0;
-        }
-
-        /* Mobile responsive adjustments */
-        @media (max-width: 768px) {
-            .language-switcher {
-                top: 15px; /* 与主题切换器保持同一高度 */
-                left: 15px;
-            }
-            
-            .lang-btn {
-                padding: 6px 12px;
-                font-size: 12px;
-                height: 36px; /* 移动端稍微小一点 */
-            }
-            
-            .lang-dropdown {
-                min-width: 120px;
-            }
-            
-            .lang-option {
-                padding: 10px 12px;
-                font-size: 12px;
-            }
         }
         
         /* Theme Switcher */
         .theme-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9998;
+            position: relative;
             display: inline-block;
-        }
-        
-        .theme-btn {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            padding: 8px 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            color: var(--text-primary);
-            font-size: 14px;
-            font-weight: 500;
-            min-width: auto;
-            justify-content: center;
-            height: 40px;
-        }
-
-        .theme-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            border-color: var(--accent-color);
-        }
-
-        .theme-btn i.fa-sun {
-            color: var(--accent-color);
-            font-size: 16px;
-        }
-
-        .theme-btn i.fa-moon {
-            color: var(--accent-color);
-            font-size: 16px;
-        }
-
-        .theme-btn i.fa-chevron-down {
-            font-size: 12px;
-            transition: transform 0.3s ease;
-            color: var(--text-secondary);
-        }
-
-        .theme-switcher:hover .theme-btn i.fa-chevron-down,
-        .theme-dropdown.show ~ .theme-btn i.fa-chevron-down {
-            transform: rotate(180deg);
-        }
-
-        .theme-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            min-width: 140px;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            margin-top: 8px;
-            backdrop-filter: blur(15px);
-        }
-
-        .theme-dropdown.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .theme-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border-radius: 8px;
-            margin: 4px;
-        }
-
-        .theme-option:hover {
-            background-color: var(--bg-secondary);
-            color: var(--accent-color);
-            transform: translateX(-4px);
-        }
-
-        .theme-option.active {
-            color: var(--accent-color);
-            font-weight: 600;
-            background-color: rgba(var(--accent-color-rgb), 0.1);
-        }
-
-        .theme-option.active i.fa-check {
-            color: var(--accent-color);
-        }
-
-        .theme-option:not(.active) i.fa-check {
-            opacity: 0;
-        }
-
-        .theme-option i.fa-sun,
-        .theme-option i.fa-moon {
-            color: var(--accent-color);
-            width: 16px;
-            text-align: center;
-        }
-
-        /* Mobile responsive adjustments */
-        @media (max-width: 768px) {
-            .theme-switcher {
-                top: 15px;
-                right: 15px;
-            }
-            
-            .theme-btn {
-                padding: 6px 12px;
-                font-size: 12px;
-                height: 36px;
-            }
-            
-            .theme-dropdown {
-                min-width: 120px;
-            }
-            
-            .theme-option {
-                padding: 10px 12px;
-                font-size: 12px;
-            }
         }
         
         /* 确保整个页面在黑夜模式下都是深色背景 */
         html, body {
             margin: 0;
             padding: 0;
+            padding-top: 50px; /* 减少顶部内边距，调整为50px */
             min-height: 100vh;
             transition: background-color 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            html, body {
+                padding-top: 45px; /* 移动端顶部内边距调整为45px */
+            }
         }
         
         /* Dark theme text clarity */
@@ -448,23 +232,111 @@
         .dark-theme html,
         .dark-theme body {
             background-color: #1a1a2e !important;
+            color: #ffffff !important;
         }
         
+        /* 黑夜模式下所有文字元素的颜色 */
         .dark-theme a {
             color: #ffffff; /* 白色链接 */
         }
-        .dark-theme p, .dark-theme li, .dark-theme span {
+        .dark-theme p, 
+        .dark-theme li, 
+        .dark-theme span, 
+        .dark-theme div,
+        .dark-theme label,
+        .dark-theme input,
+        .dark-theme textarea,
+        .dark-theme select {
             color: #ffffff; /* 白色文本用于段落和列表 */
         }
-        .dark-theme h1, .dark-theme h2, .dark-theme h3, .dark-theme h4, .dark-theme h5, .dark-theme h6 {
+        .dark-theme h1, 
+        .dark-theme h2, 
+        .dark-theme h3, 
+        .dark-theme h4, 
+        .dark-theme h5, 
+        .dark-theme h6 {
             color: #ffffff; /* 白色标题 */
         }
-        .dark-theme .award-item h3, .dark-theme .talk-item h3, .dark-theme .project-item h3 {
-            color: #ffffff; /* 确保奖项、讲座和项目标题为白色 */
+        
+        /* 导航栏文字 */
+        .dark-theme .nav-menu li a {
+            color: #ffffff;
         }
-        .dark-theme .award-item p, .dark-theme .talk-item p, .dark-theme .project-item p {
-            color: #e0e0e0; /* 稍微浅一点的灰色用于描述文本 */
+        
+        .dark-theme .logo h1 {
+            color: #ffffff;
         }
+        
+        /* 下拉菜单文字 */
+        .dark-theme .dropdown-option {
+            color: #ffffff;
+        }
+        
+        /* 页脚文字 */
+        .dark-theme footer {
+            color: #ffffff;
+        }
+        
+        .dark-theme footer p {
+            color: #ffffff;
+        }
+        
+        /* 确保所有内容区域的文字都是白色 */
+        .dark-theme main,
+        .dark-theme main *,
+        .dark-theme .content,
+        .dark-theme .content * {
+            color: #ffffff;
+        }
+        
+        /* 特殊元素的文字颜色 */
+        .dark-theme .card,
+        .dark-theme .card *,
+        .dark-theme .section,
+        .dark-theme .section *,
+        .dark-theme .talk-item,
+        .dark-theme .talk-item *,
+        .dark-theme .award-item,
+        .dark-theme .award-item *,
+        .dark-theme .skill-category,
+        .dark-theme .skill-category *,
+        .dark-theme .contact-info,
+        .dark-theme .contact-info * {
+            color: #ffffff;
+        }
+        
+        /* 表单元素 */
+        .dark-theme input,
+        .dark-theme textarea,
+        .dark-theme select {
+            background-color: #2a2a3e;
+            border-color: #404060;
+            color: #ffffff;
+        }
+        
+        /* 按钮文字 */
+        .dark-theme button {
+            color: #ffffff;
+        }
+        
+        /* 确保所有子元素都是白色文字 */
+        .dark-theme * {
+            color: #ffffff !important;
+        }
+        
+        /* 但是保留一些特殊颜色，比如强调色 */
+        .dark-theme .switcher-btn i:hover,
+        .dark-theme .dropdown-option i.fa-sun,
+        .dark-theme .dropdown-option i.fa-moon,
+        .dark-theme .dropdown-option i.fa-globe,
+        .dark-theme .talk-time i, 
+        .dark-theme .talk-location i,
+        .dark-theme .dropdown-option.active,
+        .dark-theme .lang-option.active,
+        .dark-theme .theme-option.active {
+            color: var(--accent-color) !important;
+        }
+        
         /* Block and card styling inspired by Resume Theme */
         .card, .section, .talk-item, .award-item, .skill-category {
             background-color: #f5f5f5; /* 浅灰色背景，类似于 Resume Theme 的块颜色 */
@@ -1165,6 +1037,23 @@
             border-color: rgba(77, 171, 247, 0.4);
         }
 
+        /* 简约型导航栏设计 */
+        .navbar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .dark-theme .navbar-container {
+            background: rgba(31, 41, 55, 0.95);
+            border-bottom-color: #374151;
+        }
+
         .navbar {
             max-width: 1200px;
             margin: 0 auto;
@@ -1172,75 +1061,306 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 60px;
-            position: relative; /* 添加相对定位 */
+            height: 64px;
+            position: relative;
         }
 
         .logo {
-            margin-left: 80px; /* 向右移动姓名，避免被语言切换器挡住 */
+            flex: none;
+            text-align: left;
         }
 
         .logo h1 {
             font-size: 1.8rem;
-            font-weight: 700;
+            font-weight: 600;
             margin: 0;
             color: var(--text-primary);
             transition: color 0.3s ease;
-            letter-spacing: -0.02em;
         }
 
+        .nav-center {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: none;
+        }
+
+        /* 简约切换按钮样式 */
+        .language-switcher,
+        .theme-switcher {
+            position: relative;
+            display: inline-block;
+        }
+
+        .switcher-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .dark-theme .switcher-btn {
+            background: #374151;
+            border-color: #4b5563;
+        }
+
+        .switcher-btn:hover {
+            background: #f3f4f6;
+            border-color: var(--accent-color);
+        }
+
+        .dark-theme .switcher-btn:hover {
+            background: #4b5563;
+        }
+
+        .switcher-btn i {
+            font-size: 16px;
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+        }
+
+        .switcher-btn:hover i {
+            color: var(--accent-color);
+        }
+
+        /* 简约下拉菜单样式 */
+        .switcher-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 120px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.2s ease;
+            z-index: 1000;
+            padding: 4px;
+        }
+
+        .language-switcher .switcher-dropdown {
+            left: 0;
+            right: auto;
+        }
+
+        .switcher-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dark-theme .switcher-dropdown {
+            background: #374151;
+            border-color: #4b5563;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .dropdown-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 400;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-option:hover {
+            background: #f3f4f6;
+            color: var(--accent-color);
+        }
+
+        .dark-theme .dropdown-option:hover {
+            background: #4b5563;
+        }
+
+        .dropdown-option.active {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .dropdown-option i.fa-check {
+            font-size: 12px;
+            color: var(--accent-color);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .dropdown-option.active i.fa-check {
+            opacity: 1;
+        }
+
+        .dropdown-option i.fa-sun,
+        .dropdown-option i.fa-moon,
+        .dropdown-option i.fa-globe {
+            font-size: 14px;
+            color: var(--accent-color);
+        }
+
+        /* 简约汉堡菜单按钮 */
         .nav-toggle {
             display: none;
             cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            transition: all 0.2s ease;
         }
 
+        .dark-theme .nav-toggle {
+            background: #374151;
+            border-color: #4b5563;
+        }
+
+        .nav-toggle:hover {
+            background: #f3f4f6;
+        }
+
+        .dark-theme .nav-toggle:hover {
+            background: #4b5563;
+        }
+
+        .hamburger-line {
+            width: 18px;
+            height: 2px;
+            background: var(--text-secondary);
+            border-radius: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-toggle:hover .hamburger-line {
+            background: var(--accent-color);
+        }
+
+        .nav-toggle.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .nav-toggle.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* 简约导航菜单样式 */
         .nav-menu {
             display: flex;
             list-style: none;
             margin: 0;
             padding: 0;
             align-items: center;
-            gap: 1.8rem;
-            margin-right: 80px; /* 向左移动导航链接，避免被主题切换器挡住 */
+            gap: 0.5rem;
         }
 
-        /* Mobile responsive adjustments */
+        .nav-menu li a {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 400;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-menu li a:hover {
+            background: #f3f4f6;
+            color: var(--accent-color);
+        }
+
+        .dark-theme .nav-menu li a:hover {
+            background: #4b5563;
+        }
+
+        /* 响应式设计 */
         @media (max-width: 768px) {
             .navbar {
                 padding: 0 1rem;
-                height: 50px;
+                height: 56px;
+                justify-content: space-between;
             }
             
             .logo {
-                margin-left: 60px; /* 移动端减少左边距 */
+                flex: none;
+                text-align: left;
             }
             
             .logo h1 {
                 font-size: 1.5rem;
             }
             
+            .nav-center {
+                display: none;
+            }
+            
+            .nav-right {
+                position: static;
+                right: auto;
+                gap: 0.5rem;
+            }
+            
             .nav-toggle {
-                display: block;
-                margin-right: 60px; /* 移动端调整右边距 */
+                display: flex;
+                order: 3;
+            }
+            
+            .language-switcher {
+                order: 1;
+            }
+            
+            .theme-switcher {
+                order: 2;
+            }
+            
+            .switcher-btn {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .switcher-btn i {
+                font-size: 14px;
             }
             
             .nav-menu {
                 display: none;
                 position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--navbar-bg);
-                border-bottom: 1px solid var(--border-color);
-                padding: 1rem 0;
+                top: calc(100% + 8px);
+                left: 1rem;
+                right: 1rem;
+                background: white;
+                border: 1px solid #d1d5db;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                padding: 8px;
                 flex-direction: column;
-                gap: 0;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                backdrop-filter: blur(10px);
-                margin-right: 0; /* 移动端重置右边距 */
+                gap: 4px;
+                z-index: 1000;
             }
             
             .nav-menu.active {
@@ -1248,79 +1368,107 @@
             }
             
             .nav-menu li {
-                margin: 0;
                 width: 100%;
             }
             
             .nav-menu li a {
-                padding: 1rem 2rem;
-                border-radius: 0;
-                font-size: 1rem;
-                border-bottom: 1px solid var(--border-color);
+                display: block;
+                text-align: center;
+                padding: 12px 16px;
+                font-size: 14px;
+                border-radius: 4px;
             }
             
-            .nav-menu li:last-child a {
-                border-bottom: none;
+            .dark-theme .nav-menu {
+                background: #374151;
+                border-color: #4b5563;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
             }
+        }
+
+        /* 修复锚点跳转位置 - 确保跳转到标题而不是被导航栏遮挡 */
+        section[id] {
+            scroll-margin-top: 80px; /* 桌面端偏移，稍微大于导航栏高度 */
+        }
+
+        @media (max-width: 768px) {
+            section[id] {
+                scroll-margin-top: 70px; /* 移动端偏移 */
+            }
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
   </head>
   <body>
-      <!-- Language Switcher -->
-      <div class="language-switcher">
-          <button class="lang-btn" id="lang-btn">
-              <i class="fas fa-globe"></i>
-              <span>中文</span>
-              <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="lang-dropdown" id="lang-dropdown">
-              <a href="/cn/" class="lang-option active">
-                  <i class="fas fa-check"></i>
-                  中文
-              </a>
-              <a href="/en/" class="lang-option">
-                  English
-              </a>
-          </div>
-      </div>
-
-      <!-- Theme Toggle Button -->
-      <div class="theme-switcher">
-          <button class="theme-btn" id="theme-btn">
-          <i class="fas fa-sun" id="themeIcon"></i>
-              <span id="themeText">白天</span>
-              <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="theme-dropdown" id="theme-dropdown">
-              <a href="#" class="theme-option" data-theme="light">
-                  <i class="fas fa-check"></i>
-                  <i class="fas fa-sun"></i>
-                  白天
-              </a>
-              <a href="#" class="theme-option" data-theme="dark">
-                  <i class="fas fa-check"></i>
-                  <i class="fas fa-moon"></i>
-                  夜晚
-              </a>
-          </div>
-      </div>
-
     <header>
-        <nav class="navbar">
-            <div class="logo">
-                <h1>乐绎华</h1>
+        <nav class="navbar-container">
+            <div class="navbar">
+                <!-- 左侧logo -->
+                <div class="logo">
+                    <h1>乐绎华</h1>
+                </div>
+                
+                <!-- 中间导航菜单 -->
+                <div class="nav-center">
+                    <ul class="nav-menu" id="navMenu">
+                        <li><a href="/about/#bio">简介</a></li>
+                        <li><a href="/about/#talks">讲座</a></li>
+                        <li><a href="/about/#projects">项目</a></li>
+                        <li><a href="/about/#awards">获奖</a></li>
+                        <li><a href="/about/#skills">技能</a></li>
+                        <li><a href="/about/#contact">联系</a></li>
+                    </ul>
+                </div>
+                
+                <!-- 右侧区域：语言切换器、主题切换器和移动端菜单按钮 -->
+                <div class="nav-right">
+                    <!-- 语言切换器 -->
+                    <div class="language-switcher">
+                        <button class="switcher-btn lang-btn" id="lang-btn">
+                            <i class="fas fa-globe"></i>
+                        </button>
+                        <div class="switcher-dropdown lang-dropdown" id="lang-dropdown">
+                            <a href="/cn/" class="dropdown-option active">
+                                <i class="fas fa-check"></i>
+                                <span>中文</span>
+                            </a>
+                            <a href="/en/" class="dropdown-option">
+                                <span>English</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 主题切换器 -->
+                    <div class="theme-switcher">
+                        <button class="switcher-btn theme-btn" id="theme-btn">
+                            <i class="fas fa-sun" id="themeIcon"></i>
+                        </button>
+                        <div class="switcher-dropdown theme-dropdown" id="theme-dropdown">
+                            <a href="#" class="dropdown-option" data-theme="light">
+                                <i class="fas fa-check"></i>
+                                <i class="fas fa-sun"></i>
+                                <span>白天</span>
+                            </a>
+                            <a href="#" class="dropdown-option" data-theme="dark">
+                                <i class="fas fa-check"></i>
+                                <i class="fas fa-moon"></i>
+                                <span>夜晚</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 移动端菜单切换按钮 -->
+                    <div class="nav-toggle" id="navToggle">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </div>
+                </div>
             </div>
-            <div class="nav-toggle" id="navToggle">
-                <i class="fas fa-bars"></i>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="/about/#bio">简介</a></li>
-                <li><a href="/about/#research">研究</a></li>
-                <li><a href="/about/#talks">讲座</a></li>
-                <li><a href="/about/#awards">获奖</a></li>
-                <li><a href="/about/#skills">技能</a></li>
-                <li><a href="/about/#contact">联系</a></li>
-            </ul>
         </nav>
     </header>
     <main>
@@ -1328,12 +1476,16 @@
         {% endblock %}
     </main>
     <footer>
-        <p>&copy; {% now "Y" %} 乐绎华. 本作品采用 CC BY NC ND 4.0 许可协议。</p>
+        <p>&copy; {% now "Y" %} 乐绎华. 本网站采用 CC BY NC ND 4.0 许可协议。</p>
     </footer>
     <script>
         // Navigation toggle
-        document.getElementById('navToggle').addEventListener('click', function() {
-            document.getElementById('navMenu').classList.toggle('active');
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
         });
 
         // Language switcher functionality
@@ -1351,6 +1503,9 @@
         // 鼠标悬停显示下拉菜单
         languageSwitcher.addEventListener('mouseenter', () => {
             langDropdown.classList.add('show');
+            // 如果主题下拉菜单打开，关闭它
+            const themeDropdown = document.getElementById('theme-dropdown');
+            themeDropdown.classList.remove('show');
         });
 
         // 鼠标离开隐藏下拉菜单
@@ -1375,7 +1530,6 @@
         const themeDropdown = document.getElementById('theme-dropdown');
         const themeSwitcher = document.querySelector('.theme-switcher');
         const themeIcon = document.getElementById('themeIcon');
-        const themeText = document.getElementById('themeText');
         const body = document.body;
         const html = document.documentElement;
 
@@ -1389,11 +1543,7 @@
         themeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             // 直接切换主题
-            if (currentTheme === 'light') {
-                currentTheme = 'dark';
-            } else {
-                currentTheme = 'light';
-            }
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
             setTheme(currentTheme);
             localStorage.setItem('theme', currentTheme);
         });
@@ -1401,6 +1551,8 @@
         // 鼠标悬停显示下拉菜单
         themeSwitcher.addEventListener('mouseenter', () => {
             themeDropdown.classList.add('show');
+            // 如果语言下拉菜单打开，关闭它
+            langDropdown.classList.remove('show');
         });
 
         // 鼠标离开隐藏下拉菜单
@@ -1421,7 +1573,7 @@
         });
 
         // 处理下拉菜单选项点击
-        document.querySelectorAll('.theme-option').forEach(option => {
+        document.querySelectorAll('.dropdown-option[data-theme]').forEach(option => {
             option.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -1437,7 +1589,7 @@
             currentTheme = theme;
             
             // 更新主题选项的active状态
-            document.querySelectorAll('.theme-option').forEach(option => {
+            document.querySelectorAll('.dropdown-option[data-theme]').forEach(option => {
                 if (option.getAttribute('data-theme') === theme) {
                     option.classList.add('active');
                 } else {
@@ -1451,14 +1603,12 @@
                 html.classList.remove('dark-theme');
                 html.classList.add('light-theme');
                 themeIcon.className = 'fas fa-sun';
-                themeText.textContent = '白天';
             } else if (theme === 'dark') {
                 body.classList.remove('light-theme');
                 body.classList.add('dark-theme');
                 html.classList.remove('light-theme');
                 html.classList.add('dark-theme');
                 themeIcon.className = 'fas fa-moon';
-                themeText.textContent = '夜晚';
             }
         }
     </script>
