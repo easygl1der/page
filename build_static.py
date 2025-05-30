@@ -51,6 +51,10 @@ def process_template_content(content):
     content = content.replace("window.location.href = '/en/';", "window.location.href = 'index_en.html';")
     content = content.replace("window.location.href = '/cn/';", "window.location.href = 'index.html';")
     
+    # 替换下拉菜单中的链接
+    content = content.replace('href="/cn/"', 'href="index.html"')
+    content = content.replace('href="/en/"', 'href="index_en.html"')
+    
     # 确保静态文件路径正确
     content = content.replace('href="/static/', 'href="static/')
     content = content.replace('src="/static/', 'src="static/')
