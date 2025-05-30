@@ -41,6 +41,14 @@ def process_django_template(template_content, is_base=False, page_title=""):
         content = re.sub(r"{% url ['\"]?" + re.escape(url_name) + r"['\"]? %}", static_url, content)
         content = content.replace(f'href="{url_name}"', f'href="{static_url}"')
     
+    # 处理JavaScript中的语言切换URL - 修复GitHub Pages上的路径问题
+    content = content.replace("window.location.href = '/cn/';", "window.location.href = 'index.html';")
+    content = content.replace("window.location.href = '/en/';", "window.location.href = 'index_en.html';")
+    
+    # 处理导航菜单中的语言切换链接
+    content = content.replace('href="/cn/"', 'href="index.html"')
+    content = content.replace('href="/en/"', 'href="index_en.html"')
+    
     # 处理{% now %}标签
     current_year = datetime.now().year
     content = re.sub(r'{% now ["\']Y["\'] %}', str(current_year), content)
