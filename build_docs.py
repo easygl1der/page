@@ -287,6 +287,269 @@ def generate_html_files(docs_dir):
     with open(os.path.join(docs_dir, 'index.html'), 'w', encoding='utf-8') as f:
         f.write(index_content)
     
+    # 生成英文版主页
+    index_en_content = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yue Yihua - Personal Academic Homepage</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+</head>
+<body class="light-theme">
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="index_en.html" class="brand-link">Yue Yihua</a>
+            </div>
+            <div class="nav-menu">
+                <a href="#bio" class="nav-link">About</a>
+                <a href="#talks" class="nav-link">Talks</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#awards" class="nav-link">Awards</a>
+                <a href="#hobbies" class="nav-link">Hobbies</a>
+                <a href="index.html" class="nav-link lang-switch">中文</a>
+            </div>
+            <div class="theme-controls">
+                <button id="theme-toggle" class="theme-btn" title="Toggle Theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="bio" class="hero">
+            <div class="hero-content">
+                <div class="profile">
+                    <h1>👋 Hello, I'm Yue Yihua</h1>
+                    <h2>Mathematics Undergraduate, Sun Yat-sen University</h2>
+                    <p>I am a passionate mathematics undergraduate student, about to enter my junior year. I am particularly enthusiastic about exploring Partial Differential Equations, Advanced Probability Theory, and Algebraic Geometry.</p>
+                    <div class="interests">
+                        <h3>Research Interests</h3>
+                        <ul>
+                            <li>Partial Differential Equations</li>
+                            <li>Probability Theory</li>
+                            <li>Algebraic Geometry</li>
+                        </ul>
+                    </div>
+                    <div class="education">
+                        <h3>Education</h3>
+                        <ul>
+                            <li><strong>Bachelor of Mathematics</strong> - Sun Yat-sen University (September 2023 - Present)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="profile-photo">
+                    <img src="static/images/profile.jpg" alt="Photo of Yue Yihua" class="tilted-photo">
+                    
+                    <!-- Contact Icons under photo -->
+                    <div class="bio-contact-icons">
+                        <a href="static/files/resume_yueyihua.pdf" target="_blank" class="bio-icon resume" title="Download Resume">
+                            <i class="fas fa-file-pdf"></i>
+                        </a>
+                        <a href="mailto:yueyh@mail2.sysu.edu.cn" class="bio-icon email" title="Send Email">
+                            <svg class="heroicon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/easygl1der" target="_blank" class="bio-icon github" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="talk_detail_en.html" class="bio-icon talk" title="Talks">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="talks">
+            <h2>🎤 Talks & Presentations</h2>
+            <div class="talks-list">
+                <a href="talk_detail_en.html" class="talk-item-link">
+                    <div class="talk-item clickable-talk">
+                        <div class="talk-header">
+                            <h3>LaTeX Advanced Introduction Talk</h3>
+                            <div class="talk-image">
+                                <img src="static/images/latex-talk-2.jpg" alt="LaTeX Talk Scene" class="talk-photo">
+                            </div>
+                        </div>
+                        <div class="talk-content">
+                            <div class="talk-meta">
+                                <div class="talk-time">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>November 15, 2024 19:00-22:00</span>
+                                </div>
+                                <div class="talk-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Room 301, Building 392, Huang Chuanjing Hall</span>
+                                </div>
+                            </div>
+                            <div class="talk-description">
+                                <p>Introducing LaTeX fundamentals to new students, including basic functions, installation methods, usage tips, etc. This event is jointly organized by SPS Physics Association and Duxing Studio.</p>
+                            </div>
+                        </div>
+                        <div class="talk-action">
+                            <span class="talk-link-text">Click to view details →</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>📑 My Mathematica Project</h2>
+            <div class="projects-list">
+                <a href="mathematica_project_en.html" class="project-item-link">
+                    <div class="project-item clickable-project">
+                        <h3>Numerical Solution Research of Lane-Emden-Fowler Equations</h3>
+                        <p><strong>Abstract:</strong> Lane-Emden-Fowler equations are a class of second-order nonlinear differential equations with wide applications in astrophysics, fluid mechanics, thermodynamics, and other fields, used to describe phenomena such as stellar structure and heat conduction.</p>
+                        <p><strong>Keywords:</strong> Mathematica, Lane-Emden-Fowler equations, Numerical analysis, LH-HPM, Fractional derivatives</p>
+                        <div class="project-action">
+                            <span class="project-link-text">Click to view details →</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section id="awards">
+            <h2>🏆 Awards & Honors</h2>
+            <div class="awards-list">
+                <a href="https://mp.weixin.qq.com/s/aZOxVwuB1lkwG64KBbxHVA" target="_blank" class="award-item-link">
+                    <div class="award-item clickable-award">
+                        <h3>National Scholarship</h3>
+                        <p>Academic Year 2023-2024, National Level Scholarship</p>
+                        <div class="award-action">
+                            <span class="award-link-text">View Information →</span>
+                        </div>
+                    </div>
+                </a>
+                <div class="award-item clickable-award">
+                    <h3>Sun Yat-sen University First-Class Scholarship</h3>
+                    <p>Academic Year 2023-2024, Sun Yat-sen University</p>
+                </div>
+                <a href="http://yau-contest.com/uploads/202505/27/1748321560229592.pdf" target="_blank" class="award-item-link">
+                    <div class="award-item clickable-award">
+                        <h3>2025 S.-T. Yau College Student Mathematics Contest - Analysis & Differential Equations Track Merit Award</h3>
+                        <p>S.-T. Yau College Student Mathematics Contest</p>
+                        <div class="award-action">
+                            <span class="award-link-text">View Information →</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="http://yau-contest.com/uploads/202505/27/1748321521986447.pdf" target="_blank" class="award-item-link">
+                    <div class="award-item clickable-award">
+                        <h3>2025 S.-T. Yau College Student Mathematics Contest - Probability & Statistics Track Finalist</h3>
+                        <p>S.-T. Yau College Student Mathematics Contest</p>
+                        <div class="award-action">
+                            <span class="award-link-text">View Information →</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://mp.weixin.qq.com/s/pLsQK1NePCJEvThrzODyEA" target="_blank" class="award-item-link">
+                    <div class="award-item clickable-award">
+                        <h3>15th National College Student Mathematics Competition Final (Lower Grade Group) First Prize</h3>
+                        <p>National Ranking 8th</p>
+                        <div class="award-action">
+                            <span class="award-link-text">View Information →</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://mp.weixin.qq.com/s/Ub4s1H-VSKTMjKb46uZ1DQ" target="_blank" class="award-item-link">
+                    <div class="award-item clickable-award">
+                        <h3>16th National College Student Mathematics Competition Final (Higher Grade Group) First Prize</h3>
+                        <p>Chinese Mathematical Society</p>
+                        <div class="award-action">
+                            <span class="award-link-text">View Information →</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section id="hobbies">
+            <h2>⚽ My Hobbies</h2>
+            <div class="hobbies-list">
+                <a href="football_hobby_en.html" class="hobby-item-link">
+                    <div class="hobby-item clickable-hobby">
+                        <h3>Football</h3>
+                        <p>I love football and regularly participate in campus football matches and friendly games. Football not only exercises my body but also cultivates my teamwork spirit.</p>
+                        <div class="hobby-action">
+                            <span class="hobby-link-text">Learn More →</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Yue Yihua. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="mailto:yueyh@mail2.sysu.edu.cn">Contact Me</a>
+                <a href="https://github.com/easygl1der" target="_blank">GitHub</a>
+                <a href="static/files/resume_yueyihua.pdf" target="_blank">Resume</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light-theme';
+        body.className = savedTheme;
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-theme')) {
+                body.className = 'dark-theme';
+                localStorage.setItem('theme', 'dark-theme');
+                updateThemeIcon('dark-theme');
+            } else {
+                body.className = 'light-theme';
+                localStorage.setItem('theme', 'light-theme');
+                updateThemeIcon('light-theme');
+            }
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark-theme') {
+                themeIcon.className = 'fas fa-moon';
+            } else {
+                themeIcon.className = 'fas fa-sun';
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>'''
+    
+    # 写入英文版主页
+    with open(os.path.join(docs_dir, 'index_en.html'), 'w', encoding='utf-8') as f:
+        f.write(index_en_content)
+    
     print("HTML文件生成完成")
 
 if __name__ == '__main__':
