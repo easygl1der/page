@@ -104,6 +104,11 @@ header {
     justify-content: space-between;
     align-items: center;
     height: 60px;
+    position: relative; /* 添加相对定位 */
+}
+
+.logo {
+    margin-left: 80px; /* 向右移动姓名，避免被语言切换器挡住 */
 }
 
 .logo h1 {
@@ -130,7 +135,7 @@ header {
     padding: 0;
     align-items: center;
     gap: 1.8rem;
-    margin-left: -1rem;
+    margin-right: 80px; /* 向左移动导航链接，避免被主题切换器挡住 */
 }
 
 .nav-menu li {
@@ -445,12 +450,17 @@ footer {
         height: 50px;
     }
     
+    .logo {
+        margin-left: 60px; /* 移动端减少左边距 */
+    }
+    
     .logo h1 {
         font-size: 1.5rem;
     }
     
     .nav-toggle {
         display: block;
+        margin-right: 60px; /* 移动端调整右边距 */
     }
     
     .nav-menu {
@@ -466,6 +476,7 @@ footer {
         gap: 0;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         backdrop-filter: blur(10px);
+        margin-right: 0; /* 移动端重置右边距 */
     }
     
     .nav-menu.active {
